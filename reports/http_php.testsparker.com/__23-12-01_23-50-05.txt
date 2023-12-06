@@ -1,0 +1,65 @@
+# Dirsearch started Fri Dec  1 23:57:04 2023 as: tool/dirsearch/dirsearch.py -u http://php.testsparker.com/ --delay=0.5
+
+403   297B   http://php.testsparker.com/%3f/
+403   301B   http://php.testsparker.com/%C0%AE%C0%AE%C0%AF
+403   296B   http://php.testsparker.com/%ff
+403   306B   http://php.testsparker.com/.ht_wsr.txt
+403   309B   http://php.testsparker.com/.htaccess.bak1
+403   310B   http://php.testsparker.com/.htaccess_extra
+403   309B   http://php.testsparker.com/.htaccess.save
+403   307B   http://php.testsparker.com/.htaccessBAK
+403   309B   http://php.testsparker.com/.htaccess.orig
+403   309B   http://php.testsparker.com/.htaccess_orig
+403   311B   http://php.testsparker.com/.htaccess.sample
+403   307B   http://php.testsparker.com/.htaccessOLD
+403   307B   http://php.testsparker.com/.htaccess_sc
+403   300B   http://php.testsparker.com/.HTF/
+403   308B   http://php.testsparker.com/.htaccessOLD2
+403   299B   http://php.testsparker.com/.htm
+403   300B   http://php.testsparker.com/.html
+403   309B   http://php.testsparker.com/.htpasswd_test
+403   306B   http://php.testsparker.com/.httr-oauth
+403   305B   http://php.testsparker.com/.htpasswds
+200     1KB  http://php.testsparker.com/.svn/
+200     1KB  http://php.testsparker.com/.svn/all-wcprops
+200     2KB  http://php.testsparker.com/.svn/entries
+301   333B   http://php.testsparker.com/.svn    -> REDIRECTS TO: http://php.testsparker.com/.svn/
+200   311B   http://php.testsparker.com/3
+200     0B   http://php.testsparker.com/auth.php
+301   333B   http://php.testsparker.com/auth    -> REDIRECTS TO: http://php.testsparker.com/auth/
+302     0B   http://php.testsparker.com/auth/    -> REDIRECTS TO: login.php
+200   620B   http://php.testsparker.com/auth/login
+200     3KB  http://php.testsparker.com/auth/login.php
+200   270B   http://php.testsparker.com/ClientAccessPolicy.xml
+200     1B   http://php.testsparker.com/conf
+200     1B   http://php.testsparker.com/conf/catalina.policy
+200     1B   http://php.testsparker.com/conf/Catalina
+200     1B   http://php.testsparker.com/conf/tomcat-users.xml
+200     1B   http://php.testsparker.com/conf/
+200     1B   http://php.testsparker.com/conf/server.xml
+200     1B   http://php.testsparker.com/conf/catalina.properties
+200     1B   http://php.testsparker.com/conf/context.xml
+200     1B   http://php.testsparker.com/conf/logging.properties
+200     1B   http://php.testsparker.com/conf/tomcat8.conf
+200     1B   http://php.testsparker.com/conf/web.xml
+200   315B   http://php.testsparker.com/crossdomain.xml
+200     3KB  http://php.testsparker.com/hello
+200     0B   http://php.testsparker.com/images/
+301   335B   http://php.testsparker.com/images    -> REDIRECTS TO: http://php.testsparker.com/images/
+200     4KB  http://php.testsparker.com/index.old
+403   311B   http://php.testsparker.com/index.php::$DATA
+200     4KB  http://php.testsparker.com/page
+200     4KB  http://php.testsparker.com/page.php
+200    53KB  http://php.testsparker.com/phpinfo
+200    53KB  http://php.testsparker.com/phpinfo.php
+200     3KB  http://php.testsparker.com/products.php
+200     3KB  http://php.testsparker.com/products
+301   337B   http://php.testsparker.com/progra~1    -> REDIRECTS TO: http://php.testsparker.com/progra~1/
+200    25B   http://php.testsparker.com/robots.txt
+200     9KB  http://php.testsparker.com/style
+301   333B   http://php.testsparker.com/test    -> REDIRECTS TO: http://php.testsparker.com/test/
+200   905B   http://php.testsparker.com/test/
+200     2KB  http://php.testsparker.com/test.txt
+403   311B   http://php.testsparker.com/Trace.axd::$DATA
+200   920B   http://php.testsparker.com/vendor/
+403   312B   http://php.testsparker.com/web.config::$DATA

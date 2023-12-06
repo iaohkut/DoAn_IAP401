@@ -1,0 +1,8 @@
+# Dirsearch started Tue Dec  5 23:55:43 2023 as: tool/dirsearch/dirsearch.py -u http://54.254.196.11/Admin/Detail.php?CustomerId=1 --delay=0.5
+
+403   303B   http://54.254.196.11/Admin/Detail.php%3f/
+403   303B   http://54.254.196.11/Admin/Detail.php%C0%AE%C0%AE%C0%AF
+403   303B   http://54.254.196.11/Admin/Detail.php%ff
+403   303B   http://54.254.196.11/Admin/Detail.phpindex.php::$DATA
+403   303B   http://54.254.196.11/Admin/Detail.phpTrace.axd::$DATA
+403   303B   http://54.254.196.11/Admin/Detail.phpweb.config::$DATA

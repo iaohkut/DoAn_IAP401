@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% block content %}
+    <center><h1>{% block title %}  User List  {% endblock %}</h1></center>
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/showuser.css') }}">
+    <a href="{{ url_for('add_user')}}" class="btn btn-primary" style="float: right;" role="button" aria-pressed="true">Create user</a>
+  </br></br></br>
+  <center>
+  <form action="{{ url_for('search_user') }}" method ="GET">
+    <input style="text-align: center;width:50%;" name="username" type="username" placeholder="Search User via Username" />
+    <button>Search</button>
+  </form>
+</center></br>
+    <table class="table">
+        <thead class="thead-dark" text-align="center" style="text-align: center;width:100%;">
+          <tr>
+            <th style="text-align: center"scope="col">#</th>
+            <th style="text-align: center"scope="col">Username</th>
+            <th style="text-align: center"scope="col">Role</th>
+            <th style="text-align: center"scope="col">Join Date</th>
+            <th style="text-align: center"scope="col">Last Update Date</th>
+            <th style="text-align: center"scope="col">Create By</th>
+            <th style="text-align: center"scope="col">Update By</th>
+            <th style="text-align: center"scope="col">Status</th>
+            <th style="text-align: center"scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <p style="color:red;">{{msg}}</p>
+        {% for user in users %}
+          <tr>
+            <th style="text-align: center"class="counterCell"></th>
+            <th style="text-align: center"class="align-middle"  scope="row">{{ user.username }}</th>
+            <td style="text-align: center"class="align-middle" >{{ user.role }}</td>
+            <td style="text-align: center"class="align-middle" >{{ user.join_date }}</td>
+            <td style="text-align: center"class="align-middle" >{{ user.update_date }}</td>
+            <td style="text-align: center"class="align-middle" >{{ user.create_by }}</td>
+            <td style="text-align: center"class="align-middle" >{{ user.update_by }}</td>
+            {% if user.isactive == 1 %}
+            <td style="text-align: center"class="align-middle">Enable</td>
+            {%else%}
+            <td style="text-align: center"class="align-middle">Disable</td>
+            {% endif %}
+            <td style="text-align: center"class="align-middle"> 
+              <span style="float:left;">
+              <a href="{{ url_for('edituser',id= user.userid) }} "class="btn btn-primary">Edit</a>
+              </span>
+              {% if user.isactive == 1 %}
+              <span style="float:left;"> 
+              <form action="{{ url_for('showuser') }}" method=post >
+                  <input name="userid" type=hidden value="{{ user.userid }}"/>
+                  <button id="disable" type=submit class="btn btn-danger" >Disable</button>
+              </form>
+            </span>
+            {% else %}
+            <span style="float:left;"> 
+              <form action="{{ url_for('enableaccount') }}" method=post >
+                  <input name="userid" type=hidden value="{{ user.userid }}"/>
+                  <button id="enable" type=submit class="btn btn-success" >Enable</button>
+              </form>
+            </span>
+            {% endif %}
+            </td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table> 
+{% endblock %}

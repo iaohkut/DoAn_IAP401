@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block content %}
+<center><h1>{% block title %} Create a New Project{% endblock %}</h1></center>
+<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/login.css') }}">
+</br></br>
+<form class="form-signin" method="post">
+    <div class="form-group">
+        <input required="" type="text" name="projectname"
+               placeholder="Project name" class="form-control"
+               value="{{ request.form['projectname'] }}"></input>
+    </div>
+    <div>
+        <label for="startdate">Start Date :</label>
+        <input required="" type="date" id="startdate" name="startdate">
+    </div>
+
+    <div class="form-group">
+        <input required="" type="url" name="target"
+        placeholder="Target" class="form-control"
+               value="{{ request.form['target'] }}"></input>
+    </div>
+
+    <div class="form-group">
+        <label for="manager">Project Manger </label>
+        <select required="" id="manager" name="manager"> 
+            {% for user in users %}
+            {% if  user.role == 'Project Manager'%}
+            <option value="{{user.username}}">{{user.username}}</option>
+            {% endif %}
+            {% endfor %}
+          </select>
+    </div>
+    <div class="form-group">
+        <label required="" for="pentester">Project Pentester</label>
+        <select id="pentester" name="pentester"> 
+            {% for user in users %}
+            {% if  user.role == 'Pentester'%}
+            <option value="{{user.username}}">{{user.username}}</option>
+            {% endif %}
+            {% endfor %}
+        </select>
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+    <p style="color:red;">{{msg}}</p>
+</form>
+{% endblock %}

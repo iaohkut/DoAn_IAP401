@@ -1,0 +1,450 @@
+[
+  {
+    "id": "1",
+    "template_name": "HTTP/HTTPS"
+  },
+  {
+    "id": "2",
+    "template_name": "JavaScript Code"
+  },
+  {
+    "id": "3",
+    "template_name": "HTML Comment"
+  },
+  {
+    "id": "4",
+    "template_name": "HTTP Methods"
+  },
+  {
+    "id": "5",
+    "template_name": "Security Headers (CSP)"
+  },
+  {
+    "id": "6",
+    "template_name": "Security Headers (X-Frame-Options)"
+  },
+  {
+    "id": "7",
+    "template_name": "Security Headers (HSTS)"
+  },
+  {
+    "id": "8",
+    "template_name": "Components"
+  },
+  {
+    "id": "9",
+    "template_name": "Hidden Paths"
+  },
+  {
+    "id": "10",
+    "template_name": "Cross Domain Policy"
+  },
+  {
+    "id": "11",
+    "template_name": "Other Running Applications"
+  },
+  {
+    "id": "12",
+    "template_name": "Administrator Interfaces"
+  },
+  {
+    "id": "13",
+    "template_name": "Information Exposure (Server Version Information)"
+  },
+  {
+    "id": "14",
+    "template_name": "Forceful Browsing (Authentication)"
+  },
+  {
+    "id": "15",
+    "template_name": "Default Credentials"
+  },
+  {
+    "id": "16",
+    "template_name": "Information Exposure (Confidential Information)"
+  },
+  {
+    "id": "17",
+    "template_name": "Account Lockout Feature"
+  },
+  {
+    "id": "18",
+    "template_name": "Account Lockout Feature (Bypass Rate-limit)"
+  },
+  {
+    "id": "19",
+    "template_name": "Authentication Bypass (Parameter/Response Modification)"
+  },
+  {
+    "id": "20",
+    "template_name": "Authentication Bypass (Alternative Channel)"
+  },
+  {
+    "id": "21",
+    "template_name": "User Enumeration"
+  },
+  {
+    "id": "22",
+    "template_name": "Password Policy (Weak Password)"
+  },
+  {
+    "id": "23",
+    "template_name": "Password Policy (Weak Initial Password)"
+  },
+  {
+    "id": "24",
+    "template_name": "Password Policy (Truncated Password)"
+  },
+  {
+    "id": "25",
+    "template_name": "Password Verification (Case-insensitive Password)"
+  },
+  {
+    "id": "26",
+    "template_name": "Remember Me Functionality"
+  },
+  {
+    "id": "27",
+    "template_name": "Password Change Functionality (User Interface)"
+  },
+  {
+    "id": "28",
+    "template_name": "Password Change Functionality (Lack of Re-Authentication)"
+  },
+  {
+    "id": "29",
+    "template_name": "Password Reset Functionality (Session Termination)"
+  },
+  {
+    "id": "30",
+    "template_name": "Password Reset Functionality (Insufficient User Verification)"
+  },
+  {
+    "id": "31",
+    "template_name": "Password Reset Functionality (Password Reset Token Is Reusable)"
+  },
+  {
+    "id": "32",
+    "template_name": "Password Reset Functionality (Password Reset Token Leak Via Referrer)"
+  },
+  {
+    "id": "33",
+    "template_name": "Password Reset Functionality (Sending Credentials by Email)"
+  },
+  {
+    "id": "34",
+    "template_name": "OAuth Login Functionality"
+  },
+  {
+    "id": "35",
+    "template_name": "2FA/OTP Bypass"
+  },
+  {
+    "id": "36",
+    "template_name": "CAPTCHA Bypass"
+  },
+  {
+    "id": "37",
+    "template_name": "Forceful Browsing (Authorization)"
+  },
+  {
+    "id": "38",
+    "template_name": "Directory Traversal (File read)"
+  },
+  {
+    "id": "39",
+    "template_name": "Directory Traversal (File creation/deletion)"
+  },
+  {
+    "id": "40",
+    "template_name": "Directory Traversal (Existence of File and Directory Exposed)"
+  },
+  {
+    "id": "41",
+    "template_name": "Privilege Escalation"
+  },
+  {
+    "id": "42",
+    "template_name": "IDOR (Viewing other users' data)"
+  },
+  {
+    "id": "43",
+    "template_name": "IDOR (Manipulating other users' data)"
+  },
+  {
+    "id": "44",
+    "template_name": "Session ID (Exposure)"
+  },
+  {
+    "id": "45",
+    "template_name": "Session ID (Structure)"
+  },
+  {
+    "id": "46",
+    "template_name": "Session ID (Predictability)"
+  },
+  {
+    "id": "47",
+    "template_name": "Cookies Attributes (HttpOnly)"
+  },
+  {
+    "id": "48",
+    "template_name": "Cookies Attributes (Secure)"
+  },
+  {
+    "id": "49",
+    "template_name": "Session Fixation (Authentication)"
+  },
+  {
+    "id": "50",
+    "template_name": "Session Fixation (Screen Transition)"
+  },
+  {
+    "id": "51",
+    "template_name": "CSRF (Without tokens)"
+  },
+  {
+    "id": "52",
+    "template_name": "CSRF (Bypass Validation)"
+  },
+  {
+    "id": "53",
+    "template_name": "CSRF (Token is not associated with session)"
+  },
+  {
+    "id": "54",
+    "template_name": "Logout Functionality (User Interface)"
+  },
+  {
+    "id": "55",
+    "template_name": "Logout Functionality (Session Termination)"
+  },
+  {
+    "id": "56",
+    "template_name": "Session Timeout"
+  },
+  {
+    "id": "57",
+    "template_name": "JWT's algorithm"
+  },
+  {
+    "id": "58",
+    "template_name": "JWT's signature"
+  },
+  {
+    "id": "59",
+    "template_name": "XSS (Basic)"
+  },
+  {
+    "id": "60",
+    "template_name": "XSS (Filename)"
+  },
+  {
+    "id": "61",
+    "template_name": "XSS (File Upload)"
+  },
+  {
+    "id": "62",
+    "template_name": "XSS (DOM based)"
+  },
+  {
+    "id": "63",
+    "template_name": "HTML Injection"
+  },
+  {
+    "id": "64",
+    "template_name": "HTTP Parameter Pollution"
+  },
+  {
+    "id": "65",
+    "template_name": "SQL Injection"
+  },
+  {
+    "id": "66",
+    "template_name": "LDAP Injection"
+  },
+  {
+    "id": "67",
+    "template_name": "XML Injection"
+  },
+  {
+    "id": "68",
+    "template_name": "SSI Injection"
+  },
+  {
+    "id": "69",
+    "template_name": "XPath Injection"
+  },
+  {
+    "id": "70",
+    "template_name": "Code Injection"
+  },
+  {
+    "id": "71",
+    "template_name": "LFI/RFI"
+  },
+  {
+    "id": "72",
+    "template_name": "OS Command Injection"
+  },
+  {
+    "id": "73",
+    "template_name": "Host Header Injection"
+  },
+  {
+    "id": "74",
+    "template_name": "CSTI"
+  },
+  {
+    "id": "75",
+    "template_name": "SSTI"
+  },
+  {
+    "id": "76",
+    "template_name": "SSRF"
+  },
+  {
+    "id": "77",
+    "template_name": "Mass Assignment"
+  },
+  {
+    "id": "78",
+    "template_name": "Open Redirect"
+  },
+  {
+    "id": "79",
+    "template_name": "URL Injection"
+  },
+  {
+    "id": "80",
+    "template_name": "CRLF (%0d%0a) Injection"
+  },
+  {
+    "id": "81",
+    "template_name": "Insecure Deserialization"
+  },
+  {
+    "id": "82",
+    "template_name": "File Upload (Upload of Unexpected File Types)"
+  },
+  {
+    "id": "83",
+    "template_name": "File Upload (Upload of Malicious Files - Webshell)"
+  },
+  {
+    "id": "84",
+    "template_name": "File Upload (Upload of Large File)"
+  },
+  {
+    "id": "85",
+    "template_name": "Formula/CSV/Doc/Latex Injection"
+  },
+  {
+    "id": "86",
+    "template_name": "Email Injection"
+  },
+  {
+    "id": "87",
+    "template_name": "DoS (ReDoS)"
+  },
+  {
+    "id": "88",
+    "template_name": "DoS (Cookie Bomb)"
+  },
+  {
+    "id": "89",
+    "template_name": "DoS (Pixel flood)"
+  },
+  {
+    "id": "90",
+    "template_name": "Error Handling"
+  },
+  {
+    "id": "91",
+    "template_name": "Data Validation"
+  },
+  {
+    "id": "92",
+    "template_name": "Business Logic Workflow (Process Timing)"
+  },
+  {
+    "id": "93",
+    "template_name": "Business Logic Workflow (Number of Times a Function Can Be Used Limits)"
+  },
+  {
+    "id": "94",
+    "template_name": "Business Logic Workflow (Skipping Steps)"
+  },
+  {
+    "id": "95",
+    "template_name": "Business Logic Workflow (Circumvention of Work Flows)"
+  },
+  {
+    "id": "96",
+    "template_name": "Race Condition"
+  },
+  {
+    "id": "97",
+    "template_name": "using money use amount as negative value"
+  },
+  {
+    "id": "98",
+    "template_name": "using money use amount as special value (null, N/A, ...)"
+  },
+  {
+    "id": "99",
+    "template_name": "using money use amount as decimal value (0.000000000000001)"
+  },
+  {
+    "id": "100",
+    "template_name": "using money use amount as an extremely large or extremely small number"
+  },
+  {
+    "id": "101",
+    "template_name": "JavaScript Hijacking (XSSI)"
+  },
+  {
+    "id": "102",
+    "template_name": "Sending Confidential Information using GET method"
+  },
+  {
+    "id": "103",
+    "template_name": "confidential information in email"
+  },
+  {
+    "id": "104",
+    "template_name": "Amazon S3 Bucket Misconfiguration"
+  },
+  {
+    "id": "105",
+    "template_name": "upload file permission Amazon S3 Bucket "
+  },
+  {
+    "id": "106",
+    "template_name": "get file without permission  Amazon S3 Bucket "
+  },
+  {
+    "id": "107",
+    "template_name": "GraphQL"
+  },
+  {
+    "id": "108",
+    "template_name": "File Upload (Change Content-Type to change type of files)"
+  },
+  {
+    "id": "109",
+    "template_name": "Information Exposure (Others)"
+  },
+  {
+    "id": "110",
+    "template_name": "Browser Storage"
+  },
+  {
+    "id": "111",
+    "template_name": "Password Change Functionality (Session Termination)"
+  },
+  {
+    "id": "112",
+    "template_name": "Cookies Attributes (SameSite)"
+  }
+]

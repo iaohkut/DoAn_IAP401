@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/login.css') }}">
+<div class="wrapper">
+    <form class="form-signin" method="POST">    
+      </br><h2 class="form-signin-heading">Session Config</h2></br>
+      <input class="form-control" name="loginurl" placeholder"Login URL" required="" autofocus="" /></br>
+      <input class="form-control" name="usernameparameter" placeholder="Username Parameter" required="" autofocus="" /></br>
+      <input class="form-control" name="username" placeholder="Username" autofocus="" /></br>
+      <input class="form-control" name="passwordparameter" placeholder=" Password Parameter" required=""/></br>       
+      <input type="password" class="form-control" name="password" placeholder="Password" autofocus="" /></br>
+      <input class="form-control" name="csrfparam" placeholder=" Csrf Parameter" /></br>
+      <button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button> 
+      <p style="color:red;">{{msg}}</p>  
+    </form>
+</div>
+{% endblock %}

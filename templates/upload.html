@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html> 
+<head> 
+    <title>Uploading & Reading CSV file</title> 
+</head> 
+<body> 
+    <form method="POST" enctype="multipart/form-data" action="/upload"> 
+        <input type="hidden" name="projectid" id="projectid_input"> <!-- Thêm input hidden chứa giá trị projectid -->
+        <input type="file" name="file" accept=".csv">
+        <input type="submit" value="Upload"> 
+    </form>
+
+    <script>
+        // Lấy giá trị projectid từ URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const projectid = urlParams.get('projectid');
+        
+        // Gán giá trị vào trường input hidden
+        document.getElementById('projectid_input').value = projectid;
+    </script>
+</body> 
+</html>

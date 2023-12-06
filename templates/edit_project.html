@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% block content %}
+    <center><h1>{% block title %} Edit Project  {% endblock %}</h1></center>
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/showuser.css') }}">
+  </br></br></br>
+  <form method="post"> 
+    <table class="table" style="width:100%">
+        <thead class="thead-dark" style="width:100%">
+          <tr>
+            <th width="5%" scope="col">#</th>
+            <th width="10%" scope="col">Project Name</th>
+            <th width="20%" scope="col">Start Date</th>
+            <th width="20%" scope="col">End Date</th>
+            <th scope="col">Target</th>
+            <th scope="col">Project Manager</th>
+            <th scope="col">Pentester</th>
+            <th scope="col">Vunls</th>
+            <th scope="col">Security Level</th>
+            <th scope="col">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <p style="color:red;">{{msg}}</p>
+        {% for project in projects %}
+        
+          <tr>
+            <th class="counterCell"></th>
+            <th><input name="projectname" placeholder="{{project.projectname}}"autofocus="" /></br></th>
+            <td>{{ project.startdate }}</td>
+            <td>{{ project.enddate }}</td>
+            <th><input type="url" name="target" placeholder="{{project.target}}"autofocus="" /></br></th>
+            <td>
+                <select name="manager" id="manager">
+                {% for user in users %}
+                {% if  user.role == 'Project Manager'%}
+                <option value="{{user.username}}">{{user.username}}</option>
+                {% endif %}
+                {% endfor %}
+              </select>
+            </td>
+            <td>
+                <select name="pentester" id="pentester">
+                  {% for user in users %}
+                  {% if  user.role == 'Pentester'%}
+                  <option value="{{user.username}}">{{user.username}}</option>
+                  {% endif %}
+                  {% endfor %}
+              </select>
+            </td>
+            <td>{{ project.vunls }}</td>
+            <td>{{ project.securitylevel }}</td>
+            <td><select name="status" id="status">
+              <option value="Pending">Pending</option>
+              <option value="Doing">Doing</option>
+              <option value="Closed">Closed</option>
+            </select></td>
+          </tr>
+          
+        {% endfor %}
+        </tbody>
+      </table> 
+      <div class="form-group">
+        <button class="btn btn-primary" style="float: right;" role="button" aria-pressed="true" type="submit" class="btn btn-primary">Submit</button>
+        </div>
+  </form>
+{% endblock %}

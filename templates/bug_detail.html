@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+    <center><h1>{% block title %}  Bug Detail  {% endblock %}</h1></center>
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/showuser.css') }}">
+  </br></br></br>
+  {% for bug in bugs %}
+    <th style="text-align: center" class="counterCell"></th>
+    <h2>{{ loop.index }}. {{bug.name}}</h2></br>
+    <b>URL</b>: {{bug.bugurl}}</br>
+    <b>Method</b>: {{bug.method}}<br>
+    <b>Cweid</b>: {{bug.cweid}}</br>
+    <b>Confidence</b>: {{bug.confidence}}</br>
+    <b>Description</b>: {{bug.description}}</br>
+    <b>Solution</b>: {{bug.solution}}</br>
+    <b>Risk</b>: 
+    {% if bug.risk == "Informational" %}
+    <a style="color:#00ffbf;">{{bug.risk}}</a></br>
+    {% elif bug.risk == "Low" %}
+    <a style="color:#bfff00;">{{bug.risk}}</a></br>
+    {% elif bug.risk == "Medium" %}
+    <a style="color:#ffbf00;">{{bug.risk}}</a></br>
+    {% elif bug.risk == "High" %}
+    <a style="color:#ff0000;">{{bug.risk}}</a></br>
+    {% elif bug.risk == "Critical" %}
+    <a style="color:#8000ff;" >{{bug.risk}}</a></br>
+    {% endif %}
+    
+    <b>Reference</b>: <a href="{{bug.reference}}">{{bug.reference}}</a></br>
+    <b>Other</b>: {{bug.other}}</br>
+  {% endfor %}
+{% endblock %}

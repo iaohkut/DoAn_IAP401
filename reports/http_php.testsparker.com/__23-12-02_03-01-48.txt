@@ -1,0 +1,5 @@
+# Dirsearch started Sat Dec  2 03:02:01 2023 as: tool/dirsearch/dirsearch.py -u http://php.testsparker.com/ --delay=0.5
+
+403   301B   http://php.testsparker.com/%C0%AE%C0%AE%C0%AF
+403   297B   http://php.testsparker.com/%3f/
+403   296B   http://php.testsparker.com/%ff

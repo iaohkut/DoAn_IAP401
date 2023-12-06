@@ -1,0 +1,3 @@
+# Dirsearch started Fri Dec  1 22:16:17 2023 as: tool/dirsearch/dirsearch.py -u http://54.254.196.11:80/Admin/User.php --delay=200
+
+404   300B   http://54.254.196.11/Admin/User.php/%2e%2e//google.com

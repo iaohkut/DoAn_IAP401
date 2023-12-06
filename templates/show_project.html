@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+{% block content %}
+    <center><h1>{% block title %}  Project List  {% endblock %}</h1></center>
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/showuser.css') }}">
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/loading.css') }}">
+    {% if currentuser["role"] != "Pentester" %}
+    <a href="{{ url_for('add_project')}}" class="btn btn-primary" style="float: right;" role="button" aria-pressed="true">Create Project</a>
+    {% endif %}
+  </br></br></br>
+  <center>
+  <form action="{{ url_for('search_project') }}" method ="GET">
+    <input style="text-align: center;width:50%;" name="projectname" type="projectname" placeholder="Search Project" />
+    <button>Search</button>
+  </form>
+</center></br>
+<div >
+    <div id="waitloading" class="hidden"></div>
+    <table class="table" style="width:100%">
+        <thead class="thead-dark" style="width:100%">
+          <tr>
+            <th style="text-align: center"scope="col">#</th>
+            <th style="text-align: center"scope="col">Project Name</th>
+            <th style="text-align: center"scope="col">Start Date</th>
+            <th style="text-align: center"scope="col">End Date</th>
+            <th style="text-align: center"scope="col">Target</th>
+            <th style="text-align: center"scope="col">Project Manager</th>
+            <th style="text-align: center"scope="col">Pentester</th>
+            <th style="text-align: center"scope="col">Vunls</th>
+            <th style="text-align: center"scope="col">Create by</th>
+            <th style="text-align: center"scope="col">Status</th>
+            <!-- <th style="text-align: center"scope="col">Login Required</th>
+            <th style="text-align: center"scope="col">Session</th> -->
+            <th style="text-align: center;width: 10%;"scope="col">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <p style="color:red;">{{msg}}</p>
+        {% for project in projects %}
+          <tr >
+            <th style="text-align: center" class="counterCell"></th>
+            <th style="text-align: center"class="align-middle" scope="row"><a href="{{ url_for('project_detail',id= project.projectid) }} ">{{ project.projectname }}</a></th>
+            <td style="text-align: center"class="align-middle" >{{ project.startdate }}</td>
+            <td style="text-align: center"class="align-middle" >{{ project.enddate }}</td>
+            <td style="text-align: center"class="align-middle" >{{ project.target }}</a></td>
+            <td style="text-align: center"class="align-middle" >{{ project.manager }}</td>
+            <td style="text-align: center"class="align-middle" >{{ project.pentester }}</td>
+            <td style="text-align: center"class="align-middle" >{{ project.vunls }}</td>
+            <td style="text-align: center"class="align-middle" >{{ project.create_by }}</td>
+            <td style="text-align: center"class="align-middle" >{{ project.status }}</td>
+            <!-- {% if project.login == 1 %}
+            <td style="text-align: center"class="align-middle" >Yes</td>
+            {% else %}
+            <td style="text-align: center"class="align-middle" >No</td>
+            {% endif %} -->
+            <!-- <td>
+            {% if project.login == 1 %}
+              {% if project.isconfig == 0%}
+              <a style="text-align: center" href="{{ url_for('cookies_config',id= project.projectid) }}" class="btn btn-primary">Config Session</a>
+              {% else %}
+              <a style="text-align: center" href="{{ url_for('cookies_update',id= project.projectid) }}" class="btn btn-success">Update Session</a>
+              {% endif%} 
+            {% else %}
+            <a></a>
+            {% endif %}
+            </td> -->
+            <td style="text-align: center" class="align-middle" > 
+              <div style="float:center;" class="dropdown">
+                <button class="btn btn-success" class="dropbtn">Action</button>
+                <div class="dropdown-content">
+                  <a href="{{ url_for('editproject',id= project.projectid) }} "class="btn btn-primary">Edit</a>
+                  <a href="{{ url_for('deleteproject',id= project.projectid) }} "class="btn btn-danger">Delete</a>
+                </div>
+              </div>
+              </span>
+            </td>
+           
+          </td>
+          </tr>
+        {% endfor %}
+        {% if currentuser["role"] == 'Administrator' %}
+          {% for project in allprojects %}
+          <tr >
+            <th style="text-align: center" class="counterCell"></th>
+            <th style="text-align: center"class="align-middle" scope="row"><a href="{{ url_for('project_detail',id= project.projectid) }} ">{{ project.projectname }}</a></th>
+            <td style="text-align: center"class="align-middle" >{{ project.startdate }}</td>
+            <td style="text-align: center"class="align-middle" >{{ project.enddate }}</td>
+            <td style="text-align: center"class="align-middle" >{{ project.target }}</a></td>
+            <td style="text-align: center"class="align-middle" >{{ project.manager }}</td>
+            <td style="text-align: center"class="align-middle" >{{ project.pentester }}</td>
+            <td style="text-align: center"class="align-middle" >{{ project.vunls }}</td>
+            <td style="text-align: center"class="align-middle" >{{ project.create_by }}</td>
+            <td style="text-align: center"class="align-middle" >{{ project.status }}</td>
+            <!-- {% if project.login == 1 %}
+            <td style="text-align: center"class="align-middle" >Yes</td>
+            {% else %}
+            <td style="text-align: center"class="align-middle" >No</td>
+            {% endif %}
+            <td>
+            {% if project.login == 1 %}
+              {% if project.isconfig == 0%}
+              <a style="text-align: center" href="{{ url_for('cookies_config',id= project.projectid) }}" class="btn btn-primary">Config Session</a>
+              {% else %}
+              <a style="text-align: center" href="{{ url_for('cookies_update',id= project.projectid) }}" class="btn btn-success">Update Session</a>
+              {% endif%} 
+            {% else %}
+            <a></a>
+            {% endif %}
+            </td> -->
+            <td style="text-align: center" class="align-middle" > 
+              <div style="float:center;" class="dropdown">
+                <button class="btn btn-success" class="dropbtn">Action</button>
+                <div class="dropdown-content">
+                  <a href="{{ url_for('editproject',id= project.projectid) }} "class="btn btn-primary">Edit</a>
+                  <a href="{{ url_for('deleteproject',id= project.projectid) }} "class="btn btn-danger">Delete</a>
+                </div>
+              </div>
+              </span>
+            </td>
+          
+          </td>
+          </tr>
+      {% endfor %}
+
+
+
+
+        {% endif %}
+        </tbody>
+      </table> 
+    </div>
+    <!-- <script>
+      function loadScreen(value) {
+        window.location.href = '/spider-scan/'+value;
+        document.getElementById("waitloading").classList.remove("hidden");
+      }
+    </script>
+    <script>
+      function load2Screen(value) {
+        window.location.href = '/fuzzing/'+value;
+        document.getElementById("waitloading").classList.remove("hidden");
+      }
+    </script> -->
+{% endblock %}

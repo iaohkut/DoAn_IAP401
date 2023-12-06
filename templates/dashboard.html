@@ -1,0 +1,46 @@
+{% extends 'base.html' %} {% block content %}
+<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/index.css') }}">
+</br>
+<center><h1> Total Bug Found</h1></center></br>
+<div>
+  <table>
+    <tr>
+      <th style="text-align: center" style="color: red"><a style="color:purple">Critical</a></th>
+      <th style="text-align: center" style="color: red"><a style="color:Red">High</a></th>
+      <th style="text-align: center" style="color: red"><a style="color:orangered">Medium</a></th>
+      <th style="text-align: center" style="color: red"><a style="color:green">Low</a></th>
+      <th style="text-align: center" style="color: red"><a style="color:lightblue">Informational</a></th>
+    </tr>
+    <tr>
+      <td style="text-align: center" >{{total_critical}}</td>
+      <td style="text-align: center" >{{total_high}}</td>
+      <td style="text-align: center" >{{total_medium}}</td>
+      <td style="text-align: center" >{{total_low}}</td>
+      <td style="text-align: center" >{{total_info}}</td>
+    </tr>
+    <!-- Add more rows if needed -->
+  </table>
+</div>
+<br>
+<div>
+  <h5> All vulnerabilities have been found</h5></br>
+    <table class="table">
+      <thead class="table-success">
+        <tr>
+          <th style="width: 70%;"><a>Vulnerabilities Name</a></th>
+          <th style="text-align: center" ><a>Total</a></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          {% for bug in bugs  %}
+          <tr>
+              <td style="width: 70%;">{{bug.name}}</td>        
+              <td style="text-align: center">{{bug['count(bugid)']}}</td>  
+          </tr>
+          {% endfor %}
+        </tr>
+      </tbody>
+    </table>
+</div>
+{% endblock %}

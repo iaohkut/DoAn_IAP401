@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/login.css') }}">
+<div class="wrapper">
+    <form class="form-signin" method="POST">    
+      </br><h2 class="form-signin-heading">Session Update</h2></br>
+      URL<input class="form-control" name="loginurl" placeholder= "{{projectdata.loginurl}}"  autofocus="" /></br>
+      Username Parameter<input class="form-control" name="usernameparameter" placeholder="{{projectdata.userparam}}" autofocus="" /></br>
+      Username <input class="form-control" name="username" placeholder="{{projectdata.username}}" autofocus="" /></br>
+      Password Parameter<input class="form-control" name="passwordparameter" placeholder="{{projectdata.passparam}}"/></br>      
+      Password <input type="password" class="form-control" name="password" placeholder="{{projectdata.password}}" autofocus="" /></br>
+      CSRF Parameter <input class="form-control" name="csrfparam" placeholder="{{projectdata.csrfparam}}" /></br> 
+      <button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button> 
+      <p style="color:red;">{{msg}}</p>  
+    </form>
+</div>
+{% endblock %}

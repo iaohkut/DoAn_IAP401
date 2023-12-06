@@ -1,0 +1,32 @@
+# Dirsearch started Fri Dec  1 23:09:56 2023 as: tool/dirsearch/dirsearch.py -u http://php.testsparker.com/ --delay=0.5
+
+403   301B   http://php.testsparker.com/%C0%AE%C0%AE%C0%AF
+403   297B   http://php.testsparker.com/%3f/
+403   296B   http://php.testsparker.com/%ff
+403   306B   http://php.testsparker.com/.ht_wsr.txt
+403   309B   http://php.testsparker.com/.htaccess.bak1
+403   309B   http://php.testsparker.com/.htaccess.orig
+403   309B   http://php.testsparker.com/.htaccess.save
+403   311B   http://php.testsparker.com/.htaccess.sample
+403   310B   http://php.testsparker.com/.htaccess_extra
+403   309B   http://php.testsparker.com/.htaccess_orig
+403   307B   http://php.testsparker.com/.htaccess_sc
+403   307B   http://php.testsparker.com/.htaccessOLD
+403   300B   http://php.testsparker.com/.HTF/
+403   307B   http://php.testsparker.com/.htaccessBAK
+403   308B   http://php.testsparker.com/.htaccessOLD2
+403   299B   http://php.testsparker.com/.htm
+403   300B   http://php.testsparker.com/.html
+403   305B   http://php.testsparker.com/.htpasswds
+403   306B   http://php.testsparker.com/.httr-oauth
+403   309B   http://php.testsparker.com/.htpasswd_test
+301   333B   http://php.testsparker.com/.svn    -> REDIRECTS TO: http://php.testsparker.com/.svn/
+200     1KB  http://php.testsparker.com/.svn/
+200     1KB  http://php.testsparker.com/.svn/all-wcprops
+200     2KB  http://php.testsparker.com/.svn/entries
+200   311B   http://php.testsparker.com/3
+301   333B   http://php.testsparker.com/auth    -> REDIRECTS TO: http://php.testsparker.com/auth/
+200     0B   http://php.testsparker.com/auth.php
+302     0B   http://php.testsparker.com/auth/    -> REDIRECTS TO: login.php
+200     3KB  http://php.testsparker.com/auth/login.php
+200   620B   http://php.testsparker.com/auth/login

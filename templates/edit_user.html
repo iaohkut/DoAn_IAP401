@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block content %}
+    <center><h1>{% block title %} Edit user  {% endblock %}</h1></center>
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/showuser.css') }}">
+  </br></br></br>
+  <form method="post"> 
+    <table class="table">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Username</th>
+            <th scope="col">Role</th>
+            <th scope="col">Join Date</th>
+            <th scope="col">Update Date</th>
+            <th scope="col">Create By</th>
+          </tr>
+        </thead>
+        <tbody>
+            <h1 style="color:red;">{{msg}}</h1>
+        {% for user in update %}
+          <tr>
+            <th class="counterCell"></th>
+            <th scope="row">{{ user.username }}</th>
+            <td><select name="role" id="role">
+                <option value="Project Manager">Project Manager</option>
+                <option value="Pentester">Pentester</option>
+              </select></td>
+            <td>{{ user.join_date }}</td>
+            <td>{{ user.update_date }}</td>
+            <td>{{ user.create_by }}</td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table> 
+      <div class="form-group">
+        <button class="btn btn-primary" style="float: right;" role="button" aria-pressed="true" type="submit" class="btn btn-primary">Update</button>
+        </div>
+  </form>
+{% endblock %}

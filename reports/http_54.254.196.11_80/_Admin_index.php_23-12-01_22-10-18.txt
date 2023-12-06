@@ -1,0 +1,5 @@
+# Dirsearch started Fri Dec  1 22:10:37 2023 as: tool/dirsearch/dirsearch.py -u http://54.254.196.11:80/Admin/index.php
+
+404   300B   http://54.254.196.11/Admin/index.php/%2e%2e//google.com
+404   300B   http://54.254.196.11/Admin/index.php/\..\..\..\..\..\..\..\..\..\etc\passwd
+404   300B   http://54.254.196.11/Admin/index.php/a%5c.aspx

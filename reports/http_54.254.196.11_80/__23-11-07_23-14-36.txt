@@ -1,0 +1,76 @@
+# Dirsearch started Tue Nov  7 23:17:15 2023 as: tool/dirsearch/dirsearch.py -u http://54.254.196.11:80/
+
+403   303B   http://54.254.196.11/%C0%AE%C0%AE%C0%AF
+403   303B   http://54.254.196.11/%3f/
+403   303B   http://54.254.196.11/%ff
+200   989B   http://54.254.196.11/.github/
+403   303B   http://54.254.196.11/.ht_wsr.txt
+403   303B   http://54.254.196.11/.htaccess.bak1
+403   303B   http://54.254.196.11/.htaccess_extra
+403   303B   http://54.254.196.11/.htaccess_sc
+403   303B   http://54.254.196.11/.htaccess.orig
+403   303B   http://54.254.196.11/.html
+403   303B   http://54.254.196.11/.htaccessOLD2
+403   303B   http://54.254.196.11/.htaccessBAK
+403   303B   http://54.254.196.11/.htaccess.save
+403   303B   http://54.254.196.11/.htpasswd_test
+403   303B   http://54.254.196.11/.htaccess.sample
+403   303B   http://54.254.196.11/.htaccessOLD
+403   303B   http://54.254.196.11/.htm
+403   303B   http://54.254.196.11/.htaccess_orig
+403   303B   http://54.254.196.11/.htpasswds
+403   303B   http://54.254.196.11/.httr-oauth
+301   339B   http://54.254.196.11/admin    -> REDIRECTS TO: http://54.254.196.11/admin/
+301   339B   http://54.254.196.11/ADMIN    -> REDIRECTS TO: http://54.254.196.11/ADMIN/
+301   339B   http://54.254.196.11/Admin    -> REDIRECTS TO: http://54.254.196.11/Admin/
+200     4KB  http://54.254.196.11/admin%20/
+301   340B   http://54.254.196.11/admin.    -> REDIRECTS TO: http://54.254.196.11/admin./
+200     4KB  http://54.254.196.11/admin/
+200     4KB  http://54.254.196.11/Admin/
+200     4KB  http://54.254.196.11/admin/index.php
+403   303B   http://54.254.196.11/cgi-bin/
+200     2KB  http://54.254.196.11/cgi-bin/printenv.pl
+301   345B   http://54.254.196.11/connections    -> REDIRECTS TO: http://54.254.196.11/connections/
+301   345B   http://54.254.196.11/Connections    -> REDIRECTS TO: http://54.254.196.11/Connections/
+200     3KB  http://54.254.196.11/contact.php
+301   342B   http://54.254.196.11/customer    -> REDIRECTS TO: http://54.254.196.11/customer/
+301   342B   http://54.254.196.11/database    -> REDIRECTS TO: http://54.254.196.11/database/
+200   994B   http://54.254.196.11/database/
+503   403B   http://54.254.196.11/examples/
+503   403B   http://54.254.196.11/examples/websocket/index.xhtml
+503   403B   http://54.254.196.11/examples/servlets/index.html
+503   403B   http://54.254.196.11/examples/jsp/snp/snoop.jsp
+503   403B   http://54.254.196.11/examples/jsp/%252e%252e/%252e%252e/manager/html/
+503   403B   http://54.254.196.11/examples/jsp/index.html
+503   403B   http://54.254.196.11/examples/servlets/servlet/RequestHeaderExample
+503   403B   http://54.254.196.11/examples/servlet/SnoopServlet
+503   403B   http://54.254.196.11/examples/servlets/servlet/CookieExample
+503   403B   http://54.254.196.11/examples
+200    64B   http://54.254.196.11/footer.php
+200   318B   http://54.254.196.11/header.php
+301   337B   http://54.254.196.11/img    -> REDIRECTS TO: http://54.254.196.11/img/
+403   303B   http://54.254.196.11/index.php::$DATA
+200   775B   http://54.254.196.11/login.php
+403   422B   http://54.254.196.11/phpmyadmin
+403   422B   http://54.254.196.11/phpmyadmin/ChangeLog
+403   422B   http://54.254.196.11/phpmyadmin/scripts/setup.php
+403   422B   http://54.254.196.11/phpmyadmin/README
+403   422B   http://54.254.196.11/phpmyadmin/doc/html/index.html
+403   422B   http://54.254.196.11/phpmyadmin/docs/html/index.html
+403   422B   http://54.254.196.11/phpmyadmin/phpmyadmin/index.php
+403   422B   http://54.254.196.11/phpmyadmin/
+403   422B   http://54.254.196.11/phpmyadmin/index.php
+301   342B   http://54.254.196.11/products    -> REDIRECTS TO: http://54.254.196.11/products/
+200    29B   http://54.254.196.11/README.MD
+200    29B   http://54.254.196.11/Readme.md
+200    29B   http://54.254.196.11/readme.md
+200    29B   http://54.254.196.11/README.md
+200    29B   http://54.254.196.11/ReadMe.md
+200    14KB  http://54.254.196.11/register.php
+403   422B   http://54.254.196.11/server-status/
+403   422B   http://54.254.196.11/server-status
+403   422B   http://54.254.196.11/server-info
+403   303B   http://54.254.196.11/Trace.axd::$DATA
+403   303B   http://54.254.196.11/web.config::$DATA
+403   422B   http://54.254.196.11/webalizer
+403   422B   http://54.254.196.11/webalizer/

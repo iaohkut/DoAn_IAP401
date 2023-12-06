@@ -1,0 +1,321 @@
+{% extends 'base.html' %}
+{% block content %}
+    <center><h1>{% block title %} Detail of {{project.projectname}}  {% endblock %}</h1></center>
+    <a href="{{ url_for('download_report',id= project.projectid)}}" class="btn btn-success" style="float: right;" role="button" aria-pressed="true">Download Report</a>
+    <!-- <a href="{{ url_for('upload_file', projectid=project.projectid)}}" class="btn btn-success" style="float: right;" role="button" aria-pressed="true">Import CSV</a> -->
+    <a data-toggle="modal" data-target="#importCSVModal" class="btn btn-success" style="float: right; color: white;" role="button" aria-pressed="true">Import CSV</a>
+    
+<br>
+    <div style="display: flex;justify-content: center;">
+      <div style ="flex:1">
+          <h5>All Vulnerabilities have been found</h5></br>
+            <table class="table">
+              <thead class="table-success">
+                <tr>
+                  <th style="width: 70%;"><a>Vulnerabilities Name</a></th>
+                  <th style="text-align: center" ><a>Total</a></th>
+                  <th style="text-align: center" ><a>Risk</a></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  {% for bug in bugs  %}
+                  <tr>
+                      <td style="width: 70%;">{{bug.name}}</td>
+                      <td style="text-align: center">{{bug['count(bugid)']}}</td>
+                      {% if bug.risk == 'Critical' %}
+                      <td style="text-align: center" style="color: red"><a style="color:purple">{{bug.risk}}</a></td>
+                      {% elif bug.risk == 'High' %}
+                      <td style="text-align: center" style="color: red"><a style="color:Red">{{bug.risk}}</a></td>
+                      {% elif bug.risk == 'Medium' %}
+                      <td style="text-align: center" style="color: red"><a style="color:orangered">{{bug.risk}}</a></td>
+                      {% elif bug.risk == 'Low'%}
+                      <td style="text-align: center" style="color: red"><a style="color:green">{{bug.risk}}</a></td>
+                      {% elif bug.risk == 'Informational'%}
+                      <td style="text-align: center" style="color: red"><a style="color:lightblue">{{bug.risk}}</a></td>
+                      {% endif %}
+                  </tr>
+                  {% endfor %}
+                </tr>
+              </tbody>
+            </table>
+        </div>
+        <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/showuser.css') }}">
+        <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/loading.css') }}">
+      </br></br></br>
+
+    <div style ="flex:0.2">
+      <div id ="donut_chart"></div>
+    </div >
+</div>
+<script type = "text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type = "text/javascript">
+
+  google.charts.load('current', {'packages': ['corechart']})
+
+  google.charts.setOnLoadCallback(drawCharts)
+
+  function drawCharts() {
+      var data = new google.visualization.DataTable()
+      data.addColumn('string', 'Request')
+      data.addColumn('number', 'Request');
+      data.addRows([
+        ['Done', {{donerequest}}],
+        ['Remain', {{remain}}]  
+      ]);
+      var options_3 = {
+        'title': 'Request Status',
+        'width': '530',
+        'height': '500',
+        'pieHole': 0.5,
+    }
+    var donut_chart = new google.visualization.PieChart(document.getElementById('donut_chart'));
+    donut_chart.draw(data, options_3);         
+  }
+</script>
+
+<br>
+<div>
+  <div id="waitloading" class="hidden"></div>
+    <table class="table" style="width:100%">
+        <thead class="thead-dark" style="width:100%">
+          <tr>
+            <th style="text-align: center" scope="col">#</th>
+            <th style="text-align: center" style="width: 200px;">Project Request URL</th>
+            <th style="text-align: center" cope="col">Params</th>
+            <th style="text-align: center" scope="col">Status</th>
+            <th style="text-align: center" scope="col">Bug</th>
+            <th style="text-align: center" scope="col">Do active scan</th>
+            <th style="text-align: center;width: 8%;" scope="col">Test Date</th>
+            <th style="text-align: center" scope="col">Test by</th>
+          </tr>
+        </thead>
+        <tbody>
+          <p style="color:red;">{{msg}}</p>
+        {% for request in requests %}
+          <tr class="cell-1">
+            <th style="text-align: center" class="counterCell"></th>
+            <td style="cursor: pointer" data-toggle="collapse" data-target="#demo-{{request.requestid}}" onclick="decodeAndDisplay('{{request.request}}', '{{request.response}}', '{{request.requestid}}')">{{ request.requesturl }}</td>
+            <td style="text-align: center" >{{ request.haveparam }}</td>
+            <td style="text-align: center" >{{ request.status }}</td>
+            {% if request.ischatGPT == 1 %}
+              <th style="text-align: center; cursor: pointer" style="color: red"scope="row" data-toggle="modal" data-target="#statusModal-{{request.requestid}}" onclick='formatTestcase("{{request.requestid}}", "{{request.testcase}}")'>
+                <a style="color:green">Asked</a>
+              </th>
+
+                {% if request.isscan != 1 %}
+                <td style="text-align: center" > 
+                  <span style="float:center;">
+                  <a onclick="loadScreen({{request.requestid}})"class="btn btn-success">Active scan</a>
+                  </span>
+                </td>
+                {% else %}
+                <td style="text-align: center;"> 
+                  <span style="float:center; cursor: pointer;" data-toggle="modal" data-target="#activeScanModal">
+                  Had been scanned
+                  </span>
+                </td>
+                {% endif %}
+
+            {% elif request.ischatGPT != 1%}
+              <td style="text-align: center; cursor: pointer" data-toggle="modal" data-target="#statusModal-{{request.requestid}}">
+                <a onclick="call_chatGPT({{request.requestid}})"class="btn btn-success"style="color:blue">Call ChatGPT</a>
+              </td>
+                {% if request.isscan != 1 %}
+                <td style="text-align: center" > 
+                  <span style="float:center;">
+                  <a disable class="btn btn-success">Active scan</a>
+                  </span>
+                </td>
+                {% else %}
+                <td style="text-align: center;"> 
+                  <span style="float:center; cursor: pointer;" data-toggle="modal" data-target="#activeScanModal">
+                  Had been scanned
+                  </span>
+                </td>
+                {% endif %}
+            {% endif %}
+
+            <td style="text-align: center">{{ request.testdate }}</td>
+            <td style="text-align: center">{{ request.pentester }}</td>
+          </tr>
+
+          <tr id="demo-{{request.requestid}}" class="collapse cell-1 row-child">
+            <td colspan="8">
+              <div style="display: flex">
+                <div class="card" style="width: 100%">
+                  <div class="card-body">
+                    <form method="POST" action="/project-detail">   
+                      <input type="hidden" name="requestid" value="{{request.requestid}}">
+                      <h5 class="card-title">Request<button class="btn btn-success" style="float: right;" role="button" aria-pressed="true" type="submit">Save</button></h5>
+                      <textarea class="card-request" rows="10" name = "decodedOutput{{request.requestid}}" id="decodedOutput{{request.requestid}}" value="decodedOutput{{request.requestid}}">{{request.request}}</textarea>      
+                    </form>
+                  </div>
+                </div>
+                &nbsp;&nbsp;
+                <div class="card" style="width: 100%">
+                  <div class="card-body">
+                    <h5 class="card-title">Response</h5>
+                    <div style="display: flex">
+                      <div class="card" style="border: none; width: 90px;">
+                        <div class="card-body">
+                          <h6 class="card-title">Code</h6>
+                          <p>{{ request.status }}</p>
+                        </div>
+                      </div>
+
+                      <div class="card" style="width: 100%; border: none;">
+                        <div class="card-body">
+                          <h6 class="card-title">Description</h6>
+                          <textarea class="card-response" rows="7" readonly id="decodedResponseOutput{{request.requestid}}">{{ request.haveparam }}</textarea>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <!-- Modal -->
+          <div class="modal fade" id="statusModal-{{request.requestid}}" tabindex="-1" role="dialog" aria-labelledby="statusModal-{{request.requestid}}Title" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLongTitle">List Testcase</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body" id="testcase-{{request.requestid}}">
+                  
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </tbody>
+      </table> 
+    </div>
+
+<!-- Modal Do active scan -->
+<div class="modal fade" id="activeScanModal" tabindex="-1" role="dialog" aria-labelledby="activeScanModal" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Scan Detail</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <tbody>
+          {% for bug in bugs %}
+            {% if bug.detail is not none %}
+              <tr>
+                <td style="width: 70%;">{{ bug.detail }}</td>
+              </tr>
+            {% endif %}
+          {% endfor %}
+        </tbody>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Import CSV -->
+<div class="modal fade" id="importCSVModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form method="POST" enctype="multipart/form-data" action="/upload"> 
+      <div class="modal-body">
+          <input type="hidden" name="projectid" value="{{project.projectid}}"> <!-- Thêm input hidden chứa giá trị projectid -->
+          <input type="file" name="file" accept=".csv">
+          <!-- <input type="submit" value="Upload">  -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button class="btn btn-primary" type="submit" value="Upload">Save changes</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  function loadScreen(value) {
+    window.location.href = '/activescan/'+value;
+    document.getElementById("waitloading").classList.remove("hidden");
+  }
+</script>
+
+<script>
+  function call_chatGPT(value) {
+    window.location.href = '/call_chatGPT/'+value;
+    document.getElementById("waitloading").classList.remove("hidden");
+  }
+</script>
+
+<script>
+  function toggle(source) {
+    var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    for (var i = 0; i < checkboxes.length; i++) {
+        if (checkboxes[i] != source)
+            checkboxes[i].checked = source.checked;
+    }
+  } 
+</script> 
+<script>
+  function sendData() {
+    var checkboxes = document.getElementById("checkboxNoLabel");
+    var checkedValues = [];
+    checkboxes.forEach(function(checkbox) {
+      if (checkbox.checked) {
+        checkedValues.push(checkbox.value);
+        alert(checbox.value)
+      }
+    });
+  }
+
+  function decodeBase64(encodedString) {
+    return atob(encodedString);
+  }
+
+  function decodeAndDisplay(request, response, id) {
+    // Get the input value from the text field
+    var encodedString = request;
+    var encodedResponseString = response
+
+    // Decode the Base64-encoded string using the function
+    var decodedString = decodeBase64(encodedString);
+    var decodedResponseString = decodeBase64(encodedResponseString)
+
+    // Set the decoded string as the content of the div
+    document.getElementById("decodedOutput" + id).innerHTML = decodedString;
+    document.getElementById("decodedResponseOutput" + id).innerHTML = decodedResponseString;
+  }
+
+  function formatTestcase(id, testcase) {
+    var newTestcase = testcase.split('{');
+    var result = '';
+    newTestcase.forEach(function(t) {
+      var temp = t.split('}');
+
+      result += temp[0] + "<br>";
+    })
+    document.getElementById("testcase-" + id).innerHTML = result;
+  }
+</script>
+
+{% endblock %}
