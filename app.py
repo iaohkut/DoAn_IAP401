@@ -856,7 +856,8 @@ def activescan(id):
         conn.commit()
         conn.close()
         return render_template('project_detail.html',bugs=bugs,currentuser=currentuser,users=users,project=project,totalrequest=totalrequest,donerequest=donerequest,remain=remain,requests=requests,msg=msg)
-    except:
+    except Exception as e:
+        print("The error is: ", e)
         return render_template('404.html')
     
 

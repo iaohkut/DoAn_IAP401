@@ -18,6 +18,7 @@ from urllib.parse import urlparse
 from collections import deque
 import urllib3
 urllib3.disable_warnings()
+import json
 
 proxies = {
     "http" : "http://localhost:8080",
@@ -184,6 +185,8 @@ def unau_path_travel_scan(scanurl):
         "C:\\Windows\\win.ini%00.jpg",
         "C:\\Windows\\System32\\drivers\\etc\\hosts%00.jpg",
     ]
+    flag = False
+    payload = "No found RFI."
     with open(filepath) as fp:
         line = fp.readline()
         while line:
@@ -199,8 +202,11 @@ def unau_path_travel_scan(scanurl):
                         rs = requests.get(new_url,verify=False)
                         if "root:" in rs.text:
                             print('FOUND RFI in payload', query_params[param])
-                            payload = 'FOUND RFI in payload: ' + query_params[param]
-                            return True, payload
+                            json_string_lfi = json.dumps(query_params[param])
+                            payload = 'FOUND RFI in payload: ' + json_string_lfi
+                            flag = True
+                            break
+                            
                     for window in windows_file_paths:
                         query_params[param] = combined + window
                         updated_query = urlencode(query_params, doseq=True)
@@ -210,6 +216,11 @@ def unau_path_travel_scan(scanurl):
                         rs = requests.get(new_url,verify=False)
                         if "Windows" in rs.text:
                             print('FOUND RFI in payload',query_params[param])
-                            payload = 'FOUND RFI in payload: ' + query_params[param]
-                            return True, payload
+                            json_string_lfi = json.dumps(query_params[param])
+                            payload = 'FOUND RFI in payload: ' + json_string_lfi
+                            flag = True
+                            break
             line = fp.readline()
+            if flag:
+                break
+    return flag, payload

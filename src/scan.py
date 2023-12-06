@@ -244,13 +244,13 @@ def scan_OS_cmd(req, number_param):
     sample_string_bytes = base64.b64decode(base64_bytes) 
     sample_string = sample_string_bytes.decode("utf-8")
 
-    file1 = open('./tool/commix/test.txt', 'w')
+    file1 = open('./src/request.txt', 'w')
     file1.writelines(sample_string)
     
     # Closing file
     file1.close()
 
-    commix_command = "python3 ./tool/commix/commix.py -r ./tool/commix/test.txt --batch"
+    commix_command = "python3 ./tool/commix/commix.py -r ./src/request.txt --batch"
 
     process = subprocess.Popen(commix_command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
@@ -273,6 +273,8 @@ def scan_OS_cmd(req, number_param):
             return "No OS comand found"
         if re.search(r"Unable to connect to the target URL", str(output.strip())):
             return "No OS comand found"
+        if re.search(r"'-r' option is incompatible with option '-u'", str(output.strip())):
+            return "No OS comand found"
         if re.search(r"does not seem to be injectable", str(output.strip())):
             count = count + 1
         if count == number_param:
@@ -285,7 +287,7 @@ def scan_SQLi(req):
     flag = False
     sqlmap_path = r"./tool/sqlmap/sqlmap.py"
     sqlmap_output = r"./src/temp_output.txt"
-    file_request = r"./tool/commix/test.txt"
+    file_request = r"./src/request.txt"
     # Construct the command as a list
     command = ["python3", sqlmap_path, "-r", f"{file_request}", "--answers='follow=Y'", "--batch"]
     # tamper,level,risk
@@ -348,7 +350,7 @@ def write_file(req):
     sample_string_bytes = base64.b64decode(req) 
     sample_string = sample_string_bytes.decode('utf-8')
 
-    file1 = open('./tool/commix/test.txt', 'w')
+    file1 = open('./src/request.txt', 'w')
     file1.writelines(sample_string)
     
     # Closing file
@@ -360,7 +362,7 @@ def write_file_respon(respon):
     sample_string_bytes = base64.b64decode(base64_bytes) 
     sample_string = sample_string_bytes.decode("utf-8")
 
-    file1 = open('./tool/commix/respon.txt', 'w')
+    file1 = open('./src/response.txt', 'w')
     file1.writelines(sample_string)
     
     # Closing file
@@ -370,7 +372,7 @@ def scan_CORS(req, url):
     write_file(req)
 
     cookie = ''
-    with open("./tool/commix/test.txt", 'r') as output:
+    with open("./src/request.txt", 'r') as output:
         for line in output:
             if re.search(r"Cookie", str(line.strip())):
                 cookie = line.strip()
@@ -413,7 +415,7 @@ def find_comments(response_text):
 def find_javascript_code(response_text):
     write_file_respon(response_text)
 
-    with open("./tool/commix/respon.txt", 'r') as file_read:
+    with open("./src/response.txt", 'r') as file_read:
         response = file_read.read()
 
     # Biểu thức chính quy để tìm đoạn mã JavaScript trong response
@@ -639,7 +641,7 @@ def is_jwt_used(req):
 
     write_file(req)
 
-    with open("./tool/commix/test.txt", 'r') as file:
+    with open("./src/request.txt", 'r') as file:
         content = file.read()
         jwt_pattern = re.compile(r'\b([A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.[A-Za-z0-9-_.+/=]+)\b')
         matches = jwt_pattern.findall(content)
@@ -695,7 +697,7 @@ def scan_JWT_Token(req):
     
 def has_same_site_attribute(req):
     write_file(req)
-    file_path = r'./tool/commix/test.txt'  # Thay thế bằng đường dẫn thực tế của bạn
+    file_path = r'./src/request.txt'  # Thay thế bằng đường dẫn thực tế của bạn
     with open(file_path, "r") as file:
         request_content = file.read()
 
@@ -722,7 +724,7 @@ def has_same_site_attribute(req):
 def has_httponly_attribute(req):
     write_file(req)
 
-    with open("./tool/commix/test.txt", 'r') as file_read:
+    with open("./src/request.txt", 'r') as file_read:
         cookie_header = file_read.read()
 
     # Chia header cookie thành các cặp key-value
@@ -741,7 +743,7 @@ def has_httponly_attribute(req):
 def has_secure_attribute(req):
     write_file(req)
 
-    with open("./tool/commix/test.txt", 'r') as file_read:
+    with open("./src/request.txt", 'r') as file_read:
         cookie_header = file_read.read()
 
     # Chia header cookie thành các cặp key-value
