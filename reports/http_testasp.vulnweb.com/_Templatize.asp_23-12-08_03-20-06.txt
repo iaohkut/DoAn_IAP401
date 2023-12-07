@@ -1,0 +1,9 @@
+# Dirsearch started Fri Dec  8 03:23:24 2023 as: tool/dirsearch/dirsearch.py -u http://testasp.vulnweb.com/Templatize.asp?item=html/about.html --delay=0.5
+
+403   312B   http://testasp.vulnweb.com/Templatize.asp.%2e/%2e%2e/%2e%2e/%2e%2e/etc/passwd
+404     1KB  http://testasp.vulnweb.com/Templatize.asp.ashx
+404     1KB  http://testasp.vulnweb.com/Templatize.asp.asmx
+404     1KB  http://testasp.vulnweb.com/Templatize.asp.axd
+403   312B   http://testasp.vulnweb.com/Templatize.asp\..\..\..\..\..\..\..\..\..\etc\passwd
+403   312B   http://testasp.vulnweb.com/Templatize.aspcgi-bin/.%2e/%2e%2e/%2e%2e/%2e%2e/etc/passwd
+404     1KB  http://testasp.vulnweb.com/Templatize.aspelmah.axd

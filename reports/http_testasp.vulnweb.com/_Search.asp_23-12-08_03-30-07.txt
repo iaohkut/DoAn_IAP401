@@ -1,0 +1,14 @@
+# Dirsearch started Fri Dec  8 03:36:37 2023 as: tool/dirsearch/dirsearch.py -u http://testasp.vulnweb.com/Search.asp?tfSearch=a --delay=0.5
+
+403   312B   http://testasp.vulnweb.com/Search.asp.%2e/%2e%2e/%2e%2e/%2e%2e/etc/passwd
+404     1KB  http://testasp.vulnweb.com/Search.asp.ashx
+404     1KB  http://testasp.vulnweb.com/Search.asp.asmx
+404     1KB  http://testasp.vulnweb.com/Search.asp.axd
+403   312B   http://testasp.vulnweb.com/Search.asp\..\..\..\..\..\..\..\..\..\etc\passwd
+403   312B   http://testasp.vulnweb.com/Search.aspcgi-bin/.%2e/%2e%2e/%2e%2e/%2e%2e/etc/passwd
+404     1KB  http://testasp.vulnweb.com/Search.aspelmah.axd
+404     1KB  http://testasp.vulnweb.com/Search.aspservice.asmx
+404     1KB  http://testasp.vulnweb.com/Search.aspTelerik.Web.UI.WebResource.axd?type=rau
+404     1KB  http://testasp.vulnweb.com/Search.aspTrace.axd
+404     2KB  http://testasp.vulnweb.com/Search.aspumbraco/webservices/codeEditorSave.asmx
+404     1KB  http://testasp.vulnweb.com/Search.aspWebResource.axd?d=LER8t9aS

@@ -7,7 +7,7 @@ import sqlite3
 from datetime import datetime
 from src.unauthen import UnauthenScanHeaders,unau_path_travel_scan
 from src.scan import scan_hidden_path, scan_component, scan_crlf, scan_OS_cmd, has_same_site_attribute, scan_SQLi, find_comments,find_javascript_code, scan_SSTI, scan_open_redirect, check_http_method, check_http_https, scan_CORS, scan_LDAP_fields, scan_LDAP_Blind, scan_XSS, scan_JWT_Token, has_httponly_attribute, has_secure_attribute, is_jwt_used, write_file
-from src.template_vul import XFrame, X_Content, HSTS, CSP, Server_infor, Cookie_secure, Cookie_httponly, template_SQLi, template_SSTI, template_Open_Redirect, template_OS_Command, template_LFI_RFI, template_XSS, template_CORS, template_find_script, template_find_comment, template_sameSite_attribute, template_http_method, template_component, template_check_http_https, template_hidden_path, template_JWT, template_CRLF
+from src.template_vul import XFrame, X_Content, HSTS, CSP, Server_infor, Cookie_secure, Cookie_httponly, template_SQLi, template_SSTI, template_Open_Redirect, template_OS_Command, template_path_travel, template_XSS, template_CORS, template_find_script, template_find_comment, template_sameSite_attribute, template_http_method, template_component, template_check_http_https, template_hidden_path, template_JWT, template_CRLF
 from OpenAI.get_vul_by_openAI import get_vul
 import os
 import re
@@ -713,197 +713,194 @@ def call_chatGPT(id):
 
 @app.route('/activescan/<int:id>', methods=('GET', 'POST'))
 def activescan(id):
-    try:
-        msg = ''
-        currentuser = get_current_user()
-        conn = get_db_connection()
-        target = conn.execute('SELECT * FROM requests WHERE requestid = ?',(id,)).fetchone()
-        conn.commit()
-        projectid = target["projectid"]
-        check = conn.execute('SELECT * FROM projects WHERE projectid = ?',(projectid,)).fetchone()
-        if currentuser["username"] != check["pentester"]:
-            if currentuser["username"] == check["manager"]:
-                print("")
-            elif currentuser["role"] == 'Administrator':
-                print("")
-            else:
-                return render_template('403.html',)
-        requesturl = target["requesturl"]
-        conn = get_db_connection()
-        isscan = 1
-        conn.execute('UPDATE requests SET isscan= ?,status = ?,pentester=?,testdate = ? WHERE requestid=?',
-                            (isscan,"Done",currentuser["username"],datetime.today().strftime('%Y-%m-%d'),id,)).fetchone()
-        conn.commit()
-        
-        request_have_bug = 0
-        scan = UnauthenScanHeaders(target["requesturl"])
-        
-        method = target["method"]
+    msg = ''
+    currentuser = get_current_user()
+    conn = get_db_connection()
+    target = conn.execute('SELECT * FROM requests WHERE requestid = ?',(id,)).fetchone()
+    conn.commit()
+    projectid = target["projectid"]
+    check = conn.execute('SELECT * FROM projects WHERE projectid = ?',(projectid,)).fetchone()
+    if currentuser["username"] != check["pentester"]:
+        if currentuser["username"] == check["manager"]:
+            print("")
+        elif currentuser["role"] == 'Administrator':
+            print("")
+        else:
+            return render_template('403.html',)
+    requesturl = target["requesturl"]
+    conn = get_db_connection()
+    isscan = 1
+    conn.execute('UPDATE requests SET isscan= ?,status = ?,pentester=?,testdate = ? WHERE requestid=?',
+                        (isscan,"Done",currentuser["username"],datetime.today().strftime('%Y-%m-%d'),id,)).fetchone()
+    conn.commit()
+    
+    request_have_bug = 0
+    scan = UnauthenScanHeaders(target["requesturl"])
+    
+    method = target["method"]
+    if "Frame-Options" in target["testcase"]:
+        print("Scan X-Frame-Options -----------------------------------------------------------")
+        xframe = scan.scan_xframe()
+        if xframe == True:
+            XFrame(id, target["requesturl"], currentuser['username'], method)
+    if "HSTS" in target["testcase"]:
+        print("Scan Security Headers (HSTS) ---------------------------------------------------")
+        hsts = scan.scan_hsts()
+        if hsts == True:
+            HSTS(id, target["requesturl"], currentuser['username'], method)
+    if "CSP" in target["testcase"]:
+        print("Scan Security Headers (CSP) ----------------------------------------------------")
+        policy = scan.scan_policy()
+        if policy == True:
+            CSP(id, target["requesturl"], currentuser['username'], method)
+    if "Server" in target["testcase"]:
+        print("Scan Server Version Information ------------------------------------------------")
+        server = scan.scan_server()
+        if server == True:
+            Server_infor(id, target["requesturl"], currentuser['username'], method)
+    if "Secure" in target["testcase"]:
+        print("Scan Cookie Secure -------------------------------------------------------------")
+        cookiesecure = has_secure_attribute(target["response"])
+        if "not secure" in cookiesecure:
+            Cookie_secure(id, target["requesturl"], currentuser['username'], method)
+    if "HttpOnly" in target["testcase"]:
+        print("Scan Cookie HttpOnly -----------------------------------------------------------")
+        cookiehttp = has_httponly_attribute(target["response"])
+        if "not httponly" in cookiehttp:
+            Cookie_httponly(id, target["requesturl"], currentuser['username'], method)
 
-        if "Frame-Options" in target["testcase"]:
-            print("Scan X-Frame-Options -----------------------------------------------------------")
-            xframe = scan.scan_xframe()
-            if xframe == True:
-                XFrame(id, target["requesturl"], currentuser['username'], method)
+    number_param = len(target["haveparam"].split(','))
 
-        if "HSTS" in target["testcase"]:
-            print("Scan Security Headers (HSTS) ---------------------------------------------------")
-            hsts = scan.scan_hsts()
-            if hsts == True:
-                HSTS(id, target["requesturl"], currentuser['username'], method)
+    if "XSS" in target["testcase"]:
+        print("Scan XSS -----------------------------------------------------------------------")
+        print(target["haveparam"])
+        content_XSS = scan_XSS(target["requesturl"], number_param)
+        print(content_XSS)
+        if content_XSS is None:
+            print("No XSS found.")
+        elif "No XSS" not in content_XSS:
+            template_XSS(id, target["requesturl"], currentuser['username'], content_XSS, method)
 
-        if "CSP" in target["testcase"]:
-            print("Scan Security Headers (CSP) ----------------------------------------------------")
-            policy = scan.scan_policy()
-            if policy == True:
-                CSP(id, target["requesturl"], currentuser['username'], method)
-
-        if "Server" in target["testcase"]:
-            print("Scan Server Version Information ------------------------------------------------")
-            server = scan.scan_server()
-            if server == True:
-                Server_infor(id, target["requesturl"], currentuser['username'], method)
-
-        if "Secure" in target["testcase"]:
-            print("Scan Cookie Secure -------------------------------------------------------------")
-            cookiesecure = has_secure_attribute(target["request"])
-            if "not secure" in cookiesecure:
-                Cookie_secure(id, target["requesturl"], currentuser['username'], method)
-        if "HttpOnly" in target["testcase"]:
-            print("Scan Cookie HttpOnly -----------------------------------------------------------")
-            cookiehttp = has_httponly_attribute(target["request"])
-            if "not httponly" in cookiehttp:
-                Cookie_httponly(id, target["requesturl"], currentuser['username'], method)
-
-        number_param = len(target["haveparam"].split(','))
-
-        if "XSS" in target["testcase"]:
-            print("Scan XSS -----------------------------------------------------------------------")
-            print(target["haveparam"])
-            content_XSS = scan_XSS(target["requesturl"], number_param)
-            print(content_XSS)
-            if "No XSS" not in content_XSS:
-                template_XSS(id, target["requesturl"], currentuser['username'], content_XSS, method)
-        if "JWT" in target["testcase"]:
-            print("Check JWT ----------------------------------------------------------------------")
-            content_JWT = scan_JWT_Token(target["request"])
-            if "Can not" in content_JWT:
-                print("Can not crack JWT.")
-            if "No JWTs" in content_JWT:
-                print("No JWTs found in the request.")
-            if is_jwt_used(target["request"]) is not None:
-                if is_jwt_used(target["request"]) in content_JWT:
-                    print(content_JWT)
-                    template_JWT(id, target["requesturl"], currentuser['username'], content_JWT, method)
-        if "Hidden Paths" in target["testcase"]:
-            print("Check Hidden Paths -------------------------------------------------------------")
-            content_hiddenpath = scan_hidden_path(target["requesturl"])
-            print(content_hiddenpath)
-            if len(content_hiddenpath) != 0:
-                template_hidden_path(id, target["requesturl"], currentuser['username'], content_hiddenpath, method)
-        if "Components" in target["testcase"]:
-            print("Check components ---------------------------------------------------------------")
-            content_component = scan_component(target["requesturl"])
-            json_string = json.dumps(content_component)
-            print(json_string)
-            if len(content_component) != 0:
-                template_component(id, target["requesturl"], currentuser['username'], json_string, method)
-        if "CRLF" in target["testcase"]:
-            print("Check CRLF injections ----------------------------------------------------------")
-            content_CRLF = scan_crlf(target["requesturl"], target["method"])
-            print(content_CRLF)
-            if len(content_CRLF) != 0:
-                template_CRLF(id, target["requesturl"], currentuser['username'], content_CRLF, method)
-        if "Command" in target["testcase"]:
-            print("Check OS Command injections ----------------------------------------------------")
-            content_OSCommand = scan_OS_cmd(target["request"], number_param)
-            print(content_OSCommand)
-            if "No OS" not in content_OSCommand:
-                template_OS_Command(id, target["requesturl"], currentuser['username'], content_OSCommand, method)
-        if "SameSite" in target["testcase"]:
-            print("Check SameSite Attributes ------------------------------------------------------")
-            content_SameSite = has_same_site_attribute(target["request"])
-            if "set to None" in content_SameSite:
-                template_sameSite_attribute(id, target["requesturl"], currentuser['username'], same_Site, method)
-        if "SQL" in target["testcase"]:
-            print("Check SQL injections -----------------------------------------------------------")
-            content_SQLi = scan_SQLi(target["request"])
-            if "Not Found" not in content_SQLi:
-                template_SQLi(id, target["requesturl"], currentuser['username'], content_SQLi, method)
-        if "JavaScript Code" in target["testcase"]:
-            print("Check JavaScript Code ----------------------------------------------------------")
-            content_JS = find_javascript_code(target["response"])
-            if "Not Found" not in content_JS:
-                template_find_script(id, target["requesturl"], currentuser['username'], content_JS, method)
-        if "SSTI" in target["testcase"]:
-            print("Check SSTI injections ----------------------------------------------------------")
-            content_SSTI = scan_SSTI(target["method"], target["haveparam"], target["requesturl"])
-            if "Not Found" not in content_SSTI:
-                template_SSTI(id, target["requesturl"], currentuser['username'], content_SSTI, method)
-        if "Comment" in target["testcase"]:
-            print("Check HTML Comment -------------------------------------------------------------")
-            content_cmt = find_comments(target["response"])
-            if "Not Found" not in content_cmt:
-                template_find_comment(id, target["requesturl"], currentuser['username'], content_cmt, method)
-        if "Redirect" in target["testcase"]:
-            print("Check Open Redirect ------------------------------------------------------------")
-            # scan_open_redirect(target["requesturl"])
-        if "Methods" in target["testcase"]:
-            print("Check HTTP Methods -------------------------------------------------------------")
-            content_http_method = check_http_method(target["requesturl"])
-            if "Not Found" not in content_http_method:
-                template_http_method(id, target["requesturl"], currentuser['username'], content_http_method, method)
-        if "HTTPS" in target["testcase"]:
-            print("Check HTTP/HTTPS ---------------------------------------------------------------")
-            content_http = check_http_https(target["requesturl"])
-            if "Allow HTTP" in content_http:
-                template_check_http_https(id, target["requesturl"], currentuser['username'], content_http, method)
-        if "Cross" in target["testcase"]:
-            print("Check Cross Domain Policy ------------------------------------------------------")
-            content_CORS = scan_CORS(target["requesturl"])
-            print(content_CORS)
-            if "No misconfigurations" not in content_CORS:
-                template_CORS(id, target["requesturl"], currentuser['username'], content_CORS, method)
-        if "LDAP" in target["testcase"]:
-            print("Check LDAP injections ----------------------------------------------------------")
-            # scan_LDAP_fields(target["requesturl"])
-            # scan_LDAP_Blind(target["requesturl"])
-        if "Directory" in target["testcase"]:
-            print("Check Path Traversal -----------------------------------------------------------")
-            flag, content_lfi = unau_path_travel_scan(target["requesturl"])
-            print(content_lfi)
-            # json_string_lfi = json.dumps(content_lfi)
-            # print(json_string_lfi)
-            if flag:
-                template_LFI_RFI(id, target["requesturl"], currentuser['username'], content_lfi, method)
-        
-        if request_have_bug == 1:
-            conn3 = get_db_connection()
-            conn3.execute('UPDATE requests SET bug = ? WHERE requestid= ?',
-                                ("Bug Found",id,)).fetchone()
-            conn3.commit()
-            conn3.close()
-        
-        conn = get_db_connection()
-        total_vunl = conn.execute('SELECT count(bugid) FROM requests,bugs WHERE requests.requestid = bugs.requestid AND projectid = ?',(projectid,)).fetchone()
-        conn.execute('UPDATE projects SET vunls=? WHERE projectid=?',
-                            (total_vunl["count(bugid)"],projectid,))
-        project = conn.execute('SELECT * FROM projects WHERE projectid = ?',(projectid,)).fetchone()
-        requests = conn.execute('SELECT * FROM requests WHERE projectid = ?',(projectid,)).fetchall()
-        users = conn.execute('SELECT * FROM users',).fetchall()
-        total = conn.execute('SELECT count(requestid) FROM requests WHERE projectid = ?',(projectid,)).fetchone()
-        totalrequest = total["count(requestid)"]
-        done = conn.execute('SELECT count(requestid) FROM requests WHERE status = ? AND projectid = ?',("Done",projectid,)).fetchone()
-        donerequest = done["count(requestid)"]
-        remain = total["count(requestid)"] - done["count(requestid)"]
-        conn.commit()
-        bugs = conn.execute('SELECT bugs.name,count(bugid),risk FROM requests,bugs WHERE requests.requestid = bugs.requestid AND projectid = ? GROUP BY bugs.name',(target["projectid"],)).fetchall()
-        conn.commit()
-        conn.close()
-        return render_template('project_detail.html',bugs=bugs,currentuser=currentuser,users=users,project=project,totalrequest=totalrequest,donerequest=donerequest,remain=remain,requests=requests,msg=msg)
-    except Exception as e:
-        print("The error is: ", e)
-        return render_template('404.html')
+    if "JWT" in target["testcase"]:
+        print("Check JWT ----------------------------------------------------------------------")
+        content_JWT = scan_JWT_Token(target["request"])
+        if "Can not" in content_JWT:
+            print("Can not crack JWT.")
+        if "No JWTs" in content_JWT:
+            print("No JWTs found in the request.")
+        if is_jwt_used(target["request"]) is not None:
+            if is_jwt_used(target["request"]) in content_JWT:
+                print(content_JWT)
+                template_JWT(id, target["requesturl"], currentuser['username'], content_JWT, method)
+    
+    if "Hidden Paths" in target["testcase"]:
+        print("Check Hidden Paths -------------------------------------------------------------")
+        content_hiddenpath = scan_hidden_path(target["requesturl"])
+        print(content_hiddenpath)
+        if len(content_hiddenpath) != 0:
+            template_hidden_path(id, target["requesturl"], currentuser['username'], content_hiddenpath, method)
+        else:
+            print("No Hidden Paths")
+    if "Components" in target["testcase"]:
+        print("Check components ---------------------------------------------------------------")
+        content_component = scan_component(target["requesturl"])
+        json_string = json.dumps(content_component)
+        print(json_string)
+        if len(content_component) != 0:
+            template_component(id, target["requesturl"], currentuser['username'], json_string, method)
+    if "CRLF" in target["testcase"]:
+        print("Check CRLF injections ----------------------------------------------------------")
+        content_CRLF = scan_crlf(target["requesturl"], target["method"])
+        if len(content_CRLF) != 0:
+            template_CRLF(id, target["requesturl"], currentuser['username'], content_CRLF, method)
+        else:
+            print("No CRLF vulnerability")
+    
+    if "Command" in target["testcase"]:
+        print("Check OS Command injections ----------------------------------------------------")
+        content_OSCommand = scan_OS_cmd(target["request"], number_param)
+        print(content_OSCommand)
+        if "No OS" not in content_OSCommand:
+            template_OS_Command(id, target["requesturl"], currentuser['username'], content_OSCommand, method)
+    if "SameSite" in target["testcase"]:
+        print("Check SameSite Attributes ------------------------------------------------------")
+        content_SameSite = has_same_site_attribute(target["response"])
+        if "set to None" in content_SameSite:
+            template_sameSite_attribute(id, target["requesturl"], currentuser['username'], content_SameSite, method)
+    if "SQL" in target["testcase"]:
+        print("Check SQL injections -----------------------------------------------------------")
+        content_SQLi = scan_SQLi(target["request"])
+        if "Not Found" not in content_SQLi:
+            template_SQLi(id, target["requesturl"], currentuser['username'], content_SQLi, method)
+    if "JavaScript Code" in target["testcase"]:
+        print("Check JavaScript Code ----------------------------------------------------------")
+        content_JS = find_javascript_code(target["response"])
+        if "Not Found" not in content_JS:
+            template_find_script(id, target["requesturl"], currentuser['username'], content_JS, method)
+    if "SSTI" in target["testcase"]:
+        print("Check SSTI injections ----------------------------------------------------------")
+        content_SSTI = scan_SSTI(target["method"], target["haveparam"], target["requesturl"])
+        if "Not Found" not in content_SSTI:
+            template_SSTI(id, target["requesturl"], currentuser['username'], content_SSTI, method)
+    if "Comment" in target["testcase"]:
+        print("Check HTML Comment -------------------------------------------------------------")
+        content_cmt = find_comments(target["response"])
+        if "Not Found" not in content_cmt:
+            template_find_comment(id, target["requesturl"], currentuser['username'], content_cmt, method)
+    # if "Redirect" in target["testcase"]:
+    #     print("Check Open Redirect ------------------------------------------------------------")
+        # scan_open_redirect(target["requesturl"])
+    if "Methods" in target["testcase"]:
+        print("Check HTTP Methods -------------------------------------------------------------")
+        content_http_method = check_http_method(target["requesturl"])
+        if "Not Found" not in content_http_method:
+            template_http_method(id, target["requesturl"], currentuser['username'], content_http_method, method)
+    if "HTTPS" in target["testcase"]:
+        print("Check HTTP/HTTPS ---------------------------------------------------------------")
+        content_http = check_http_https(target["requesturl"])
+        if "Allow HTTP" in content_http:
+            template_check_http_https(id, target["requesturl"], currentuser['username'], content_http, method)
+    if "Cross" in target["testcase"]:
+        print("Check Cross Domain Policy ------------------------------------------------------")
+        content_CORS = scan_CORS(target["request"], target["requesturl"])
+        print(content_CORS)
+        if "No misconfigurations" not in content_CORS:
+            template_CORS(id, target["requesturl"], currentuser['username'], content_CORS, method)
+    # if "LDAP" in target["testcase"]:
+    #     print("Check LDAP injections ----------------------------------------------------------")
+        # scan_LDAP_fields(target["requesturl"])
+        # scan_LDAP_Blind(target["requesturl"])
+    if "Directory" in target["testcase"]:
+        print("Check Path Traversal -----------------------------------------------------------")
+        flag, content_path_travel = unau_path_travel_scan(target["requesturl"])
+        print(content_path_travel)
+        if flag:
+            template_path_travel(id, target["requesturl"], currentuser['username'], content_path_travel, method)
+    
+    if request_have_bug == 1:
+        conn3 = get_db_connection()
+        conn3.execute('UPDATE requests SET bug = ? WHERE requestid= ?',
+                            ("Bug Found",id,)).fetchone()
+        conn3.commit()
+        conn3.close()
+    
+    conn = get_db_connection()
+    total_vunl = conn.execute('SELECT count(bugid) FROM requests,bugs WHERE requests.requestid = bugs.requestid AND projectid = ?',(projectid,)).fetchone()
+    conn.execute('UPDATE projects SET vunls=? WHERE projectid=?',
+                        (total_vunl["count(bugid)"],projectid,))
+    project = conn.execute('SELECT * FROM projects WHERE projectid = ?',(projectid,)).fetchone()
+    requests = conn.execute('SELECT * FROM requests WHERE projectid = ?',(projectid,)).fetchall()
+    users = conn.execute('SELECT * FROM users',).fetchall()
+    total = conn.execute('SELECT count(requestid) FROM requests WHERE projectid = ?',(projectid,)).fetchone()
+    totalrequest = total["count(requestid)"]
+    done = conn.execute('SELECT count(requestid) FROM requests WHERE status = ? AND projectid = ?',("Done",projectid,)).fetchone()
+    donerequest = done["count(requestid)"]
+    remain = total["count(requestid)"] - done["count(requestid)"]
+    conn.commit()
+    bugs = conn.execute('SELECT bugs.name,count(bugid),risk FROM requests,bugs WHERE requests.requestid = bugs.requestid AND projectid = ? GROUP BY bugs.name',(target["projectid"],)).fetchall()
+    conn.commit()
+    conn.close()
+    return render_template('project_detail.html',bugs=bugs,currentuser=currentuser,users=users,project=project,totalrequest=totalrequest,donerequest=donerequest,remain=remain,requests=requests,msg=msg)
     
 
 ##########################################################################

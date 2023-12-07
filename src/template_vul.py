@@ -403,10 +403,10 @@ https://cheatsheetseries.owasp.org/cheatsheets/OS_Command_Injection_Defense_Chea
         conn.commit()
  
         
-def template_LFI_RFI(id, url, user,result_scan, method):
+def template_path_travel(id, url, user,result_scan, method):
     request_have_bug = 1
     conn = get_db_connection()
-    name = 'Local File Include'
+    name = 'Path Traversal'
     bugurl = url
     cweid = 'CWE-98'
     risk = 'High'

@@ -6,7 +6,7 @@ import base64
 import string
 import re
 
-api_key_no1 = "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"
+api_key_no1 = "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"
 openai.api_key = api_key_no1
 
 # get all vulnerabilities from file

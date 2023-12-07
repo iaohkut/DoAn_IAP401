@@ -357,9 +357,8 @@ def write_file(req):
     file1.close()
 
 def write_file_respon(respon):
-    base64_bytes = respon.encode("utf-8") 
   
-    sample_string_bytes = base64.b64decode(base64_bytes) 
+    sample_string_bytes = base64.b64decode(respon) 
     sample_string = sample_string_bytes.decode("utf-8")
 
     file1 = open('./src/response.txt', 'w')
@@ -384,11 +383,11 @@ def scan_CORS(req, url):
         if 'No misconfigurations' in line:
             return 'No misconfigurations request'
     return "Scan CORS - Access-Control-Allow-Credentials found"
-
+    
 def find_comments(response_text):
     write_file_respon(response_text)
 
-    with open(r"src/respon.txt", 'r') as file_read:
+    with open(r"src/response.txt", 'r') as file_read:
         response = file_read.read()
 
     
@@ -398,14 +397,14 @@ def find_comments(response_text):
     # Tìm tất cả các đoạn comment trong response
     comment_matches = re.findall(comment_pattern, response)
 
-    if (enumerate(comment_matches) > 0):
-        with open(r'src/temp_database.txt', 'w') as output:
+    if (len(comment_matches) > 0):
+        with open(r'./src/temp_database.txt', 'w') as output:
             for i, comment in enumerate(comment_matches, 1):
                 print(f"Comment {i}:\n{comment}\n{'='*30}")                        
                 output.write(f"Comment {i}:\n{comment}\n{'='*30}")
     else:
         print("Scanned Find Comment : Not Found")
-        return "Scanned Find Comment : Not Found"       
+        return "Scanned Find Comment : Not Found"                                  
             
     with open(r'src/temp_database.txt', 'r') as output:
         content = output.read()
@@ -427,7 +426,7 @@ def find_javascript_code(response_text):
     for javascript_code in javascript_matches:
         print(f"\n{javascript_code}\n")
         
-    if (enumerate(javascript_matches) > 0):
+    if (len(javascript_matches) > 0):
         with open(r'src/temp_database.txt', 'w') as output:
             for i, javascript_code in enumerate(javascript_matches, 1):
                 print(f"Script {i}:\n{javascript_code}\n{'='*30}")                        
@@ -638,13 +637,17 @@ def scan_XSS(url, number_param):
             return "No XSS found"
 
 def is_jwt_used(req):
-
     write_file(req)
 
     with open("./src/request.txt", 'r') as file:
         content = file.read()
         jwt_pattern = re.compile(r'\b([A-Za-z0-9-_=]+\.[A-Za-z0-9-_=]+\.[A-Za-z0-9-_.+/=]+)\b')
+
+        if jwt_pattern is None:
+            return None
+
         matches = jwt_pattern.findall(content)
+
         result = ''
         
         if matches:
@@ -678,7 +681,7 @@ def scan_JWT_Token(req):
     if token is None:
         return "No JWTs found in the request."
 
-    hashcat_command = f"hashcat -a 0 -m 16500 {token} /usr/share/wordlist/jwt_secrets_list.txt"
+    hashcat_command = f"hashcat -a 0 -m 16500 {token} ./tool/jwt_tool/jwt_secrets_list.txt"
 
     process = subprocess.Popen(hashcat_command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
@@ -695,9 +698,9 @@ def scan_JWT_Token(req):
 
     return result_string
     
-def has_same_site_attribute(req):
-    write_file(req)
-    file_path = r'./src/request.txt'  # Thay thế bằng đường dẫn thực tế của bạn
+def has_same_site_attribute(respon):
+    write_file_respon(respon)
+    file_path = './src/response.txt'  # Thay thế bằng đường dẫn thực tế của bạn
     with open(file_path, "r") as file:
         request_content = file.read()
 
@@ -708,10 +711,10 @@ def has_same_site_attribute(req):
 
             # Kiểm tra xem có thuộc tính SameSite không
             if 'SameSite' in cookie_header:
-                samesite_attribute = cookie_header.split(';')[1].strip()
+                # samesite_attribute = cookie_header.split(';')[1].strip()
                 
                 # Kiểm tra giá trị của thuộc tính SameSite
-                if 'SameSite=None' in samesite_attribute:
+                if 'SameSite=None' in cookie_header:
                     print("SameSite attribute is present and set to None.")
                     return "SameSite attribute is present and set to None."
                 else:
@@ -720,15 +723,21 @@ def has_same_site_attribute(req):
             else:
                 print("SameSite attribute is not present in the Cookie header.")
                 return "SameSite attribute is not present in the Cookie header."
+    print("SameSite attribute is not present in the Cookie header.")
+    return "SameSite attribute is not present in the Cookie header."
 
-def has_httponly_attribute(req):
-    write_file(req)
+def has_httponly_attribute(respon):
+    write_file_respon(respon)
 
-    with open("./src/request.txt", 'r') as file_read:
+    with open("./src/response.txt", 'r') as file_read:
         cookie_header = file_read.read()
 
     # Chia header cookie thành các cặp key-value
     cookie_attributes = [attribute.strip().split('=') for attribute in cookie_header.split(';')]
+    
+    if len(cookie_attributes) < 1:
+        print("This site don't use cookie.")
+        return "This site don't use cookie."
 
     # Tìm kiếm thuộc tính httponly trong danh sách các cặp key-value
     httponly_attribute = next((attr for attr in cookie_attributes if attr[0].lower() == 'httponly'), None)
@@ -740,14 +749,18 @@ def has_httponly_attribute(req):
         print("Cookie not httponly attribute.")
         return "Scanned cookies httponly: Cookie not httponly attribute."
     
-def has_secure_attribute(req):
-    write_file(req)
+def has_secure_attribute(respon):
+    write_file_respon(respon)
 
-    with open("./src/request.txt", 'r') as file_read:
+    with open("./src/response.txt", 'r') as file_read:
         cookie_header = file_read.read()
 
     # Chia header cookie thành các cặp key-value
     cookie_attributes = [attribute.strip().split('=') for attribute in cookie_header.split(';')]
+
+    if len(cookie_attributes) < 1:
+        print("This site don't use cookie.")
+        return "This site don't use cookie."
 
     # Tìm kiếm thuộc tính secure trong danh sách các cặp key-value
     secure_attribute = next((attr for attr in cookie_attributes if attr[0].lower() == 'secure'), None)
