@@ -6,7 +6,7 @@ import base64
 import string
 import re
 
-api_key_no1 = "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"
+api_key_no1 = "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"
 openai.api_key = api_key_no1
 
 # get all vulnerabilities from file
@@ -29,11 +29,6 @@ def connect_chatGPT(question):
     messages = [
         {"role": "user", "content": question},
     ]
-
-    # total_tokens = len(question)
-
-    # if total_tokens > 4097:
-    #     return False
     
     completion = openai.chat.completions.create(
         model="gpt-3.5-turbo",
@@ -54,9 +49,9 @@ def question(request, response):
     return question_list_vuln + question_request
 
 def encode_base64(strings):
-    base64_bytes = strings.encode("utf-8") 
+    # base64_bytes = strings.encode("utf-8") 
   
-    sample_string_bytes = base64.b64decode(base64_bytes) 
+    sample_string_bytes = base64.b64decode(strings) 
     sample_string = sample_string_bytes.decode("utf-8")
     return sample_string
 
@@ -64,9 +59,6 @@ def get_vul(request, response):
     # Question for openAI
     output_from_openAI = connect_chatGPT(question(encode_base64(request), encode_base64(response)))
     # print(output_from_openAI)
-
-    # if output_from_openAI == False:
-    #     return False
         
     recommend_testcase = []
     for vul in template_vuln:

@@ -638,8 +638,6 @@ def call_chatGPT(id):
 
         # Call ChatGPT generate testcase
         list_vul = get_vul(target["request"], target["response"])
-        # if list_vul == False:
-        #     list_vul = "Components </br> Information Exposure (Server Version Information) </br> User Enumeration </br> IDOR (Viewing other users' data) </br> Cookies Attributes (HttpOnly) </br> Cookies Attributes (Secure) </br> CSRF (Without tokens) </br> JWT's algorithm </br> JWT's signature </br> XSS (Basic) </br> XSS (Filename) </br> XSS (File Upload) </br> HTML Injection </br> SSTI </br> SSRF</br> Information Exposure (Others) </br>"
 
         conn = get_db_connection()
         conn.execute('UPDATE requests SET testcase=? WHERE requestid=?',
@@ -663,8 +661,55 @@ def call_chatGPT(id):
         conn.commit()
         conn.close()
         return render_template('project_detail.html',bugs=bugs,currentuser=currentuser,users=users,project=project,totalrequest=totalrequest,donerequest=donerequest,remain=remain,requests=requests,msg=msg)
-    except:
-        return render_template('404.html')
+    except Exception as e:
+        print("The error is: ", e)
+        # return render_template('404.html')
+        msg = ''
+        currentuser = get_current_user()
+        conn = get_db_connection()
+        target = conn.execute('SELECT * FROM requests WHERE requestid = ?',(id,)).fetchone()
+        conn.commit()
+        projectid = target["projectid"]
+        check = conn.execute('SELECT * FROM projects WHERE projectid = ?',(projectid,)).fetchone()
+        if currentuser["username"] != check["pentester"]:
+            if currentuser["username"] == check["manager"]:
+                print("")
+            elif currentuser["role"] == 'Administrator':
+                print("")
+            else:
+                return render_template('403.html',)
+        requesturl = target["requesturl"]
+        conn = get_db_connection()
+        ischatGPT = 1
+        conn.execute('UPDATE requests SET ischatGPT= ? WHERE requestid=?',
+                            (ischatGPT,id,)).fetchone()
+        conn.commit()
+
+        # Call ChatGPT generate testcase
+        list_vul = "Components </br> Information Exposure (Server Version Information) </br> User Enumeration </br> IDOR (Viewing other users' data) </br> Cookies Attributes (HttpOnly) </br> Cookies Attributes (Secure) </br> CSRF (Without tokens) </br> JWT's algorithm </br> JWT's signature </br> XSS (Basic) </br> XSS (Filename) </br> XSS (File Upload) </br> HTML Injection </br> SSTI </br> SSRF</br> Information Exposure (Others) </br>"
+
+        conn = get_db_connection()
+        conn.execute('UPDATE requests SET testcase=? WHERE requestid=?',
+                            (list_vul,id,)).fetchone()
+        conn.commit()
+
+        conn = get_db_connection()
+        total_vunl = conn.execute('SELECT count(bugid) FROM requests,bugs WHERE requests.requestid = bugs.requestid AND projectid = ?',(projectid,)).fetchone()
+        # conn.execute('UPDATE projects SET vunls=? WHERE projectid=?',
+        #                     (total_vunl["count(bugid)"],projectid,))
+        project = conn.execute('SELECT * FROM projects WHERE projectid = ?',(projectid,)).fetchone()
+        requests = conn.execute('SELECT * FROM requests WHERE projectid = ?',(projectid,)).fetchall()
+        users = conn.execute('SELECT * FROM users',).fetchall()
+        total = conn.execute('SELECT count(requestid) FROM requests WHERE projectid = ?',(projectid,)).fetchone()
+        totalrequest = total["count(requestid)"]
+        done = conn.execute('SELECT count(requestid) FROM requests WHERE status = ? AND projectid = ?',("Done",projectid,)).fetchone()
+        donerequest = done["count(requestid)"]
+        remain = total["count(requestid)"] - done["count(requestid)"]
+        conn.commit()
+        bugs = conn.execute('SELECT bugs.name,count(bugid),risk FROM requests,bugs WHERE requests.requestid = bugs.requestid AND projectid = ? GROUP BY bugs.name',(target["projectid"],)).fetchall()
+        conn.commit()
+        conn.close()
+        return render_template('project_detail.html',bugs=bugs,currentuser=currentuser,users=users,project=project,totalrequest=totalrequest,donerequest=donerequest,remain=remain,requests=requests,msg=msg)
 
 @app.route('/activescan/<int:id>', methods=('GET', 'POST'))
 def activescan(id):
