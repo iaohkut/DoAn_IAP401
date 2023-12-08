@@ -686,7 +686,7 @@ def call_chatGPT(id):
         conn.commit()
 
         # Call ChatGPT generate testcase
-        list_vul = "Components </br> Information Exposure (Server Version Information) </br> User Enumeration </br> IDOR (Viewing other users' data) </br> Cookies Attributes (HttpOnly) </br> Cookies Attributes (Secure) </br> CSRF (Without tokens) </br> JWT's algorithm </br> JWT's signature </br> XSS (Basic) </br> XSS (Filename) </br> XSS (File Upload) </br> HTML Injection </br> SSTI </br> SSRF</br> Information Exposure (Others) </br>"
+        list_vul = "SQL injection </br> Information Exposure (Server Version Information) </br> User Enumeration </br> IDOR (Viewing other users' data) </br> Cookies Attributes (HttpOnly) </br> Cookies Attributes (Secure) </br> CSRF (Without tokens) </br> JWT's algorithm </br> JWT's signature </br> XSS (Basic) </br> XSS (Filename) </br> XSS (File Upload) </br> HTML Injection </br> SSTI </br> SSRF</br> Information Exposure (Others) </br>"
 
         conn = get_db_connection()
         conn.execute('UPDATE requests SET testcase=? WHERE requestid=?',
