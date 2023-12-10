@@ -1,11 +1,22 @@
-GET /Search.asp?tfSearch=a HTTP/1.1
-Host: testasp.vulnweb.com
+POST /manual_interv.php HTTP/2
+Host: bwapp.hakhub.net
+Cookie: PHPSESSID=ba8ltod4po4g3scvjl0c3bov41; security_level=0
+Content-Length: 30
+Cache-Control: max-age=0
+Sec-Ch-Ua: "Not=A?Brand";v="99", "Chromium";v="118"
+Sec-Ch-Ua-Mobile: ?0
+Sec-Ch-Ua-Platform: "Windows"
 Upgrade-Insecure-Requests: 1
+Origin: https://bwapp.hakhub.net
+Content-Type: application/x-www-form-urlencoded
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.5993.88 Safari/537.36
 Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7
-Referer: http://testasp.vulnweb.com/Search.asp
+Sec-Fetch-Site: same-origin
+Sec-Fetch-Mode: navigate
+Sec-Fetch-User: ?1
+Sec-Fetch-Dest: document
+Referer: https://bwapp.hakhub.net/manual_interv.php
 Accept-Encoding: gzip, deflate, br
 Accept-Language: en-US,en;q=0.9
-Cookie: ASPSESSIONIDCQSBRATC=OMNLLOJAOPOALINJOAHKFDBH
-Connection: close
 
+captcha_user=aaaaa&form=submit

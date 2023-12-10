@@ -375,6 +375,8 @@ def scan_CORS(req, url):
         for line in output:
             if re.search(r"Cookie", str(line.strip())):
                 cookie = line.strip()
+    if len(cookie) == 0:
+        return "No misconfigurations request"
 
     Corsy_command = f"python3 tool/Corsy/corsy.py -u {url} --headers '{cookie}'"
 

@@ -1,0 +1,3 @@
+# Dirsearch started Sat Dec  9 08:02:18 2023 as: tool/dirsearch/dirsearch.py -u https://bwapp.hakhub.net/smgmt_sessionid_url.php --delay=0.5
+
+404   285B   https://bwapp.hakhub.net/smgmt_sessionid_url.php/%2e%2e//google.com
