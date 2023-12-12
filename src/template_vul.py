@@ -447,7 +447,7 @@ def template_XSS(id, url, user, result_scan,method):
     solution = "Escape special symbols to character references when outputting.Also, if limited character types are expected for the parameter, validate the value on the server side. Return an error if an unintended value is given."
     pentester = user
     reference = '''
-https://community.veracode.com/s/question/0D52T000053wYGwSAM/crosssite-scripting-xsscwe-id-80
+        https://owasp.org/www-community/attacks/xss/
             '''
     detail = result_scan
     duplicate = conn.execute('SELECT * FROM bugs WHERE requestid = ? AND bugurl = ? AND name = ?',(id,bugurl,name)).fetchone()

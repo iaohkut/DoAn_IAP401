@@ -827,7 +827,7 @@ def activescan(id):
         content_SameSite = has_same_site_attribute(target["response"])
         if "set to None" in content_SameSite:
             template_sameSite_attribute(id, target["requesturl"], currentuser['username'], content_SameSite, method)
-    if "SQL" in target["testcase"]:
+    if "QL" in target["testcase"]:
         print("Check SQL injections -----------------------------------------------------------")
         content_SQLi = scan_SQLi(target["request"])
         if "Not Found" not in content_SQLi:
