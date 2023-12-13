@@ -1,0 +1,8 @@
+# Dirsearch started Thu Dec 14 02:03:29 2023 as: tool/dirsearch/dirsearch.py -u http://php.testsparker.com/process.php?file=Generics/index.nsp --delay=0.5
+
+403   312B   http://php.testsparker.com/process.php%C0%AE%C0%AE%C0%AF
+403   308B   http://php.testsparker.com/process.php%3f/
+403   307B   http://php.testsparker.com/process.php%ff
+403   322B   http://php.testsparker.com/process.phpindex.php::$DATA
+403   322B   http://php.testsparker.com/process.phpTrace.axd::$DATA
+403   323B   http://php.testsparker.com/process.phpweb.config::$DATA

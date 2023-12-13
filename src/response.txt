@@ -1,22 +1,103 @@
-HTTP/1.1 302 Found
-Date: Fri, 01 Dec 2023 20:43:48 GMT
-Server: Apache/2.4.56 (Win64) OpenSSL/1.1.1t PHP/8.0.28
-X-Powered-By: PHP/8.0.28
-location: Products.php?CategoryId=3
-Content-Length: 325
+HTTP/1.1 200 OK
+Date: Sun, 26 Nov 2023 11:50:19 GMT
+Server: Apache/2.2.8 (Win32) PHP/5.2.6
+X-Powered-By: PHP/5.2.6
+Content-Length: 3073
 Connection: close
-Content-Type: text/html; charset=UTF-8
+Content-Type: text/html
 
-<!DOCTYPE html
-	PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<title>Untitled Document</title>
-</head>
+<meta name="keywords" content="" />
+<meta name="description" content="" />
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>Invicti Test Web Site -  PHP</title>
+<link href="/style.css" rel="stylesheet" type="text/css" media="screen" />
+</head><body>
+<div id="wrapper">
+        
+	<div id="menu">
+		<ul>
+			<li><a href="/process.php?file=Generics/index.nsp">Home</a></li>
+			<li><a href="/hello.php?name=Visitor">Hello</a></li>
+			<li><a href="/products.php?pro=url">Products</a></li>
+			<li><a href="/process.php?file=Generics/about.nsp">About</a></li>
+			<li><a href="/process.php?file=Generics/contact.nsp">Contact</a></li>
+			<li><a href="/auth/">Login</a></li>
+		</ul>
+	</div>
+	<!-- end #menu -->
+	<div id="header">
 
-<body>
-	</body>
+	</div>
+	<!-- end #header -->	    
+<div id="page">
+	<div id="page-bgtop">
+	<div id="page-bgbtm">
+		<div id="content">
+			<div class="post">
+				<div class="entry">
+				<h1 class="title"><a href="/process.php?file=Generics/index.nsp">Invicti Testing Site </a></h1>
+                    This is a test and demonstration site for Invicti , Next Generation Web
+            Application Security Scanner.
+            <p>Start Invicti to scan this web site and let it find the vulnerabilities. </p>
 
+				</div>
+			</div>
+		<div style="clear: both;">&nbsp;</div>
+		</div>
+		<!-- end #content -->
+	        
+	<div id="sidebar">
+			<ul>
+				<li>
+					<div id="search" >
+						<form method="get" action="/artist.php">
+							<div>
+								<input type="text" name="id" id="search-text" value="" />
+								<input type="submit" id="search-submit" value="GO" />
+							</div>
+						</form>
+				
+					</div>
+					<div style="clear: both;">&nbsp;</div>
+				</li>
+				<li>
+					<h2>Tags</h2>
+					<p>invicti xss web-application-security false-positive-free automated-exploitation sql-injection local/remote-file-inclusion</p>
+				</li>
+				<li>
+					<h2>Inner Pages</h2>
+					<ul>
+						<li><a href="/artist.php?id=test">Artist Search</a></li>
+						<li><a href="/nslookup.php">Lookup Service</a></li>
+						<li style="display: none;"><a href="/phpinfo.php">Hidden Service</a></li>
+					</ul>
+				</li>
+				<li>
+					<h2>Links</h2>
+					<ul>
+						<li><a href="http://aspnet.testinvicti.com/">Aspnet Testinvicti</a></li>
+						<li><a href="http://aspnet.testinvicti.com/administrator/">Aspnet Testinvicti Login</a></li>
+					</ul>
+				</li>
+			</ul>
+		</div>		<!-- end #sidebar -->
+		<div style="clear: both;">&nbsp;</div>
+	</div>
+	</div>
+	</div>	<!-- process.php load pages from path of the website. -->
+	<!-- FIXME: File / directory permissions -->
+	<!-- end #page -->
+</div>
+
+<div id="resetbar">
+	This website is automatically reset at every midnight (00:00 - UTC).
+</div>
+<div id="footer">
+		<p>Copyright (c) 2010 testinvicti.com. All rights reserved. Design by <a href="http://www.freecsstemplates.org/">Free CSS Templates</a>.</p>
+	</div>	<!-- end #footer -->
+</body>
 </html>
