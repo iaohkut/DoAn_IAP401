@@ -6,8 +6,8 @@ from fpdf import FPDF
 import sqlite3
 from datetime import datetime
 from src.unauthen import UnauthenScanHeaders,unau_path_travel_scan
-from src.scan import scan_hidden_path, scan_component, scan_crlf, scan_OS_cmd, has_same_site_attribute, scan_SQLi, find_comments,find_javascript_code, scan_SSTI, scan_open_redirect, check_http_method, check_http_https, scan_CORS, scan_LDAP_fields, scan_LDAP_Blind, scan_XSS, scan_JWT_Token, has_httponly_attribute, has_secure_attribute, is_jwt_used, write_file
-from src.template_vul import XFrame, X_Content, HSTS, CSP, Server_infor, Cookie_secure, Cookie_httponly, template_SQLi, template_SSTI, template_Open_Redirect, template_OS_Command, template_path_travel, template_XSS, template_CORS, template_find_script, template_find_comment, template_sameSite_attribute, template_http_method, template_component, template_check_http_https, template_hidden_path, template_JWT, template_CRLF
+from src.scan import scan_hidden_path, scan_component, scan_crlf, scan_OS_cmd, has_same_site_attribute, scan_SQLi, find_comments,find_javascript_code, scan_SSTI, check_http_method, check_http_https, scan_CORS, scan_XSS, scan_JWT_Token, has_httponly_attribute, has_secure_attribute, is_jwt_used, write_file
+from src.template_vul import XFrame, X_Content, HSTS, CSP, Server_infor, Cookie_secure, Cookie_httponly, template_SQLi, template_SSTI, template_OS_Command, template_path_travel, template_XSS, template_CORS, template_find_script, template_find_comment, template_sameSite_attribute, template_http_method, template_component, template_check_http_https, template_hidden_path, template_JWT, template_CRLF
 from OpenAI.get_vul_by_openAI import get_vul
 import os
 import re
@@ -525,11 +525,6 @@ def add_project():
         target = request.form['target']
         manager = request.form['manager']   
         pentester = request.form['pentester']
-        # loginrequired = 0
-        # try :
-        #     loginrequired = request.form['loginrequired']
-        # except:
-        #     print('no')
         status = 'Pending'
         exist = conn.execute('SELECT * FROM projects WHERE projectname = ?',(projectname,)).fetchone()
         if exist is not None:
@@ -594,14 +589,12 @@ def project_detail(id):
         updateprj = conn.execute('UPDATE projects SET status = ?,enddate= ? WHERE projectid = ?',("Done",datetime.today().strftime('%Y-%m-%d'),id,))
     conn.commit()
     
-    # bugs = conn.execute('SELECT bugs.name,count(bugid),risk FROM requests,bugs WHERE requests.requestid = bugs.requestid AND projectid = ? GROUP BY bugs.name',(id,)).fetchall()
     bugs = conn.execute('SELECT bugs.name,count(bugid),risk,detail FROM requests,bugs WHERE requests.requestid = bugs.requestid AND projectid = ? GROUP BY bugs.name',(id,)).fetchall()
     conn.commit()
     conn.close()
     return render_template('project_detail.html',bugs=bugs,currentuser=currentuser,havebugs=havebugs,users=users,project=project,totalrequest=totalrequest,donerequest=donerequest,remain=remain,requests=requests,msg=msg)
 @app.route('/bug-detail/<int:id>', methods=('GET', 'POST'))
 def bug_detail(id):
-    # id = requestid
     msg = ''
     conn = get_db_connection()
     if session["userid"] == None:
@@ -614,103 +607,48 @@ def bug_detail(id):
 
 @app.route('/call_chatGPT/<int:id>', methods=('GET', 'POST'))
 def call_chatGPT(id):
-    try:
-        msg = ''
-        currentuser = get_current_user()
-        conn = get_db_connection()
-        target = conn.execute('SELECT * FROM requests WHERE requestid = ?',(id,)).fetchone()
-        conn.commit()
-        projectid = target["projectid"]
-        check = conn.execute('SELECT * FROM projects WHERE projectid = ?',(projectid,)).fetchone()
-        if currentuser["username"] != check["pentester"]:
-            if currentuser["username"] == check["manager"]:
-                print("")
-            elif currentuser["role"] == 'Administrator':
-                print("")
-            else:
-                return render_template('403.html',)
-        requesturl = target["requesturl"]
-        conn = get_db_connection()
-        ischatGPT = 1
-        conn.execute('UPDATE requests SET ischatGPT= ? WHERE requestid=?',
-                            (ischatGPT,id,)).fetchone()
-        conn.commit()
-
-        # Call ChatGPT generate testcase
-        list_vul = get_vul(target["request"], target["response"])
-
-        conn = get_db_connection()
-        conn.execute('UPDATE requests SET testcase=? WHERE requestid=?',
-                            (list_vul,id,)).fetchone()
-        conn.commit()
-
-        conn = get_db_connection()
-        total_vunl = conn.execute('SELECT count(bugid) FROM requests,bugs WHERE requests.requestid = bugs.requestid AND projectid = ?',(projectid,)).fetchone()
-        # conn.execute('UPDATE projects SET vunls=? WHERE projectid=?',
-        #                     (total_vunl["count(bugid)"],projectid,))
-        project = conn.execute('SELECT * FROM projects WHERE projectid = ?',(projectid,)).fetchone()
-        requests = conn.execute('SELECT * FROM requests WHERE projectid = ?',(projectid,)).fetchall()
-        users = conn.execute('SELECT * FROM users',).fetchall()
-        total = conn.execute('SELECT count(requestid) FROM requests WHERE projectid = ?',(projectid,)).fetchone()
-        totalrequest = total["count(requestid)"]
-        done = conn.execute('SELECT count(requestid) FROM requests WHERE status = ? AND projectid = ?',("Done",projectid,)).fetchone()
-        donerequest = done["count(requestid)"]
-        remain = total["count(requestid)"] - done["count(requestid)"]
-        conn.commit()
-        bugs = conn.execute('SELECT bugs.name,count(bugid),risk FROM requests,bugs WHERE requests.requestid = bugs.requestid AND projectid = ? GROUP BY bugs.name',(target["projectid"],)).fetchall()
-        conn.commit()
-        conn.close()
-        return render_template('project_detail.html',bugs=bugs,currentuser=currentuser,users=users,project=project,totalrequest=totalrequest,donerequest=donerequest,remain=remain,requests=requests,msg=msg)
-    except Exception as e:
-        print("The error is: ", e)
-        # return render_template('404.html')
-        msg = ''
-        currentuser = get_current_user()
-        conn = get_db_connection()
-        target = conn.execute('SELECT * FROM requests WHERE requestid = ?',(id,)).fetchone()
-        conn.commit()
-        projectid = target["projectid"]
-        check = conn.execute('SELECT * FROM projects WHERE projectid = ?',(projectid,)).fetchone()
-        if currentuser["username"] != check["pentester"]:
-            if currentuser["username"] == check["manager"]:
-                print("")
-            elif currentuser["role"] == 'Administrator':
-                print("")
-            else:
-                return render_template('403.html',)
-        requesturl = target["requesturl"]
-        conn = get_db_connection()
-        ischatGPT = 1
-        conn.execute('UPDATE requests SET ischatGPT= ? WHERE requestid=?',
-                            (ischatGPT,id,)).fetchone()
-        conn.commit()
-
-        # Call ChatGPT generate testcase
-        list_vul = "SQL injection </br> Information Exposure (Server Version Information) </br> User Enumeration </br> IDOR (Viewing other users' data) </br> Cookies Attributes (HttpOnly) </br> Cookies Attributes (Secure) </br> CSRF (Without tokens) </br> JWT's algorithm </br> JWT's signature </br> XSS (Basic) </br> XSS (Filename) </br> XSS (File Upload) </br> HTML Injection </br> SSTI </br> SSRF</br> Information Exposure (Others) </br>"
-
-        conn = get_db_connection()
-        conn.execute('UPDATE requests SET testcase=? WHERE requestid=?',
-                            (list_vul,id,)).fetchone()
-        conn.commit()
-
-        conn = get_db_connection()
-        total_vunl = conn.execute('SELECT count(bugid) FROM requests,bugs WHERE requests.requestid = bugs.requestid AND projectid = ?',(projectid,)).fetchone()
-        # conn.execute('UPDATE projects SET vunls=? WHERE projectid=?',
-        #                     (total_vunl["count(bugid)"],projectid,))
-        project = conn.execute('SELECT * FROM projects WHERE projectid = ?',(projectid,)).fetchone()
-        requests = conn.execute('SELECT * FROM requests WHERE projectid = ?',(projectid,)).fetchall()
-        users = conn.execute('SELECT * FROM users',).fetchall()
-        total = conn.execute('SELECT count(requestid) FROM requests WHERE projectid = ?',(projectid,)).fetchone()
-        totalrequest = total["count(requestid)"]
-        done = conn.execute('SELECT count(requestid) FROM requests WHERE status = ? AND projectid = ?',("Done",projectid,)).fetchone()
-        donerequest = done["count(requestid)"]
-        remain = total["count(requestid)"] - done["count(requestid)"]
-        conn.commit()
-        bugs = conn.execute('SELECT bugs.name,count(bugid),risk FROM requests,bugs WHERE requests.requestid = bugs.requestid AND projectid = ? GROUP BY bugs.name',(target["projectid"],)).fetchall()
-        conn.commit()
-        conn.close()
-        return render_template('project_detail.html',bugs=bugs,currentuser=currentuser,users=users,project=project,totalrequest=totalrequest,donerequest=donerequest,remain=remain,requests=requests,msg=msg)
-
+    msg = ''
+    currentuser = get_current_user()
+    conn = get_db_connection()
+    target = conn.execute('SELECT * FROM requests WHERE requestid = ?',(id,)).fetchone()
+    conn.commit()
+    projectid = target["projectid"]
+    check = conn.execute('SELECT * FROM projects WHERE projectid = ?',(projectid,)).fetchone()
+    if currentuser["username"] != check["pentester"]:
+        if currentuser["username"] == check["manager"]:
+            print("")
+        elif currentuser["role"] == 'Administrator':
+            print("")
+        else:
+            return render_template('403.html',)
+    requesturl = target["requesturl"]
+    conn = get_db_connection()
+    ischatGPT = 1
+    conn.execute('UPDATE requests SET ischatGPT= ? WHERE requestid=?',
+                        (ischatGPT,id,)).fetchone()
+    conn.commit()
+    # Call ChatGPT generate testcase
+    list_vul = get_vul(target["request"], target["response"])
+    conn = get_db_connection()
+    conn.execute('UPDATE requests SET testcase=? WHERE requestid=?',
+                        (list_vul,id,)).fetchone()
+    conn.commit()
+    conn = get_db_connection()
+    total_vunl = conn.execute('SELECT count(bugid) FROM requests,bugs WHERE requests.requestid = bugs.requestid AND projectid = ?',(projectid,)).fetchone()
+    project = conn.execute('SELECT * FROM projects WHERE projectid = ?',(projectid,)).fetchone()
+    requests = conn.execute('SELECT * FROM requests WHERE projectid = ?',(projectid,)).fetchall()
+    users = conn.execute('SELECT * FROM users',).fetchall()
+    total = conn.execute('SELECT count(requestid) FROM requests WHERE projectid = ?',(projectid,)).fetchone()
+    totalrequest = total["count(requestid)"]
+    done = conn.execute('SELECT count(requestid) FROM requests WHERE status = ? AND projectid = ?',("Done",projectid,)).fetchone()
+    donerequest = done["count(requestid)"]
+    remain = total["count(requestid)"] - done["count(requestid)"]
+    conn.commit()
+    bugs = conn.execute('SELECT bugs.name,count(bugid),risk FROM requests,bugs WHERE requests.requestid = bugs.requestid AND projectid = ? GROUP BY bugs.name',(target["projectid"],)).fetchall()
+    conn.commit()
+    conn.close()
+    return render_template('project_detail.html',bugs=bugs,currentuser=currentuser,users=users,project=project,totalrequest=totalrequest,donerequest=donerequest,remain=remain,requests=requests,msg=msg)
+    
 @app.route('/activescan/<int:id>', methods=('GET', 'POST'))
 def activescan(id):
     msg = ''
@@ -847,9 +785,6 @@ def activescan(id):
         content_cmt = find_comments(target["response"])
         if "Not Found" not in content_cmt:
             template_find_comment(id, target["requesturl"], currentuser['username'], content_cmt, method)
-    # if "Redirect" in target["testcase"]:
-    #     print("Check Open Redirect ------------------------------------------------------------")
-        # scan_open_redirect(target["requesturl"])
     if "Methods" in target["testcase"]:
         print("Check HTTP Methods -------------------------------------------------------------")
         content_http_method = check_http_method(target["requesturl"])
@@ -866,10 +801,6 @@ def activescan(id):
         print(content_CORS)
         if "No misconfigurations" not in content_CORS:
             template_CORS(id, target["requesturl"], currentuser['username'], content_CORS, method)
-    # if "LDAP" in target["testcase"]:
-    #     print("Check LDAP injections ----------------------------------------------------------")
-        # scan_LDAP_fields(target["requesturl"])
-        # scan_LDAP_Blind(target["requesturl"])
     if "Directory" in target["testcase"]:
         print("Check Path Traversal -----------------------------------------------------------")
         flag, content_path_travel = unau_path_travel_scan(target["requesturl"])
@@ -925,7 +856,6 @@ def upload_file():
     conn = get_db_connection()
     cursor = conn.cursor()
 
-    # Lấy giá trị id từ form
     id_value = request.form['projectid']
     # id_value = projectid
 
@@ -949,10 +879,7 @@ def upload_file():
 
         # Commit the changes
         conn.commit()
-
-        # return 'File uploaded successfully and data inserted into the database.'
         return redirect(url_for('dashboard'))
-
     return 'No file uploaded.'
 
 @app.route('/project-detail/', methods=['POST'])
@@ -983,8 +910,6 @@ def edit_request():
 
     conn.execute('UPDATE requests SET request=? WHERE requestid = ?',(encoded_string,req_id)).fetchone()
     total_vunl = conn.execute('SELECT count(bugid) FROM requests,bugs WHERE requests.requestid = bugs.requestid AND projectid = ?',(projectid,)).fetchone()
-    # conn.execute('UPDATE projects SET vunls=? WHERE projectid=?',
-    #                     (total_vunl["count(bugid)"],projectid,))
     project = conn.execute('SELECT * FROM projects WHERE projectid = ?',(projectid,)).fetchone()
     requests = conn.execute('SELECT * FROM requests WHERE projectid = ?',(projectid,)).fetchall()
     users = conn.execute('SELECT * FROM users',).fetchall()

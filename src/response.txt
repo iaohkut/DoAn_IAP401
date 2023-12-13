@@ -1,109 +1,22 @@
-HTTP/1.1 200 OK
-Date: Fri, 01 Dec 2023 20:42:36 GMT
+HTTP/1.1 302 Found
+Date: Fri, 01 Dec 2023 20:43:48 GMT
 Server: Apache/2.4.56 (Win64) OpenSSL/1.1.1t PHP/8.0.28
 X-Powered-By: PHP/8.0.28
-Content-Length: 3592
+location: Products.php?CategoryId=3
+Content-Length: 325
 Connection: close
 Content-Type: text/html; charset=UTF-8
 
 <!DOCTYPE html
-    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+	PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
-    <title>Online Clothing Store</title>
-    <link href="style.css" rel="stylesheet" type="text/css" />
-    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-    <style type="text/css">
-        <!--
-        .style9 {
-            font-size: 95%;
-            font-weight: bold;
-            color: #003300;
-            font-family: Verdana, Arial, Helvetica, sans-serif;
-        }
-        -->
-    </style>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>Untitled Document</title>
 </head>
 
 <body>
-    <div id="wrapper">
-
-        <div id="title">
-    <h1><span style="color: #008000;">ONLINE CLOTHING STORE</span></h1>
-  </div>
-  
-<div class="container">
-    <ul id="navCircle">
-      <li><a class="active" href="index.php">Home</a></li>
-       <li><a href="User.php">User</a></li>
-      <li><a href="Category.php">Category</a></li>
-
-      <li><a href="Offers.php">Offers</a></li>
- <li><a href="Orders.php">Orders</a></li>
-      <li><a href="Feedback.php">Feedback</a></li>
-       <li><a href="Logout.php">Logout</a></li>
-    </ul>
-  </div>
-
-        <div id="content">
-            <h2><span style="color:#003300"> Welcome Administrator </span></h2>
-            <p align="justify">&nbsp;</p>
-            <table width="100%" border="0" cellspacing="3" cellpadding="3">
-                <tr>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                </tr>
-                <tr>
-                    <td>
-                        <p><img src="img/Jeans.jpg" alt="box" width="100" height="100" hspace="10" align="left"
-                                class="imgleft" title="box" /></p>
-                    </td>
-                    <td>
-                        <p><img src="img/asd.jpg" alt="box" width="100" height="100" hspace="10" align="left"
-                                class="imgleft" title="box" /></p>
-                    </td>
-                    <td>
-                        <p><img src="img/images.jpg" alt="box" width="100" height="100" hspace="10" align="left"
-                                class="imgleft" title="box" /></p>
-                    </td>
-                </tr>
-                <tr>
-                    <td height="26" bgcolor="#BCE0A8">
-                        <div align="center" class="style9">Jeans</div>
-                    </td>
-                    <td bgcolor="#BCE0A8">
-                        <div align="center" class="style9">Bleasures</div>
-                    </td>
-                    <td bgcolor="#BCE0A8">
-                        <div align="center" class="style9">T-Shirts</div>
-                    </td>
-                </tr>
-            </table>
-            <p>&nbsp;</p>
-        </div>
-        <div id="right-col">
-            <div class="scroll">
-                <ul class="side">
-                                            <li><a href="Products.php?CategoryId=1">Jeans</a></li>
-
-                                                <li><a href="Products.php?CategoryId=3">Shirts</a></li>
-
-                                                <li><a href="Products.php?CategoryId=4">T-Shirts</a></li>
-
-                                        </ul>
-
-            </div>
-
-            <ul class="side">
-
-            </ul>
-
-        </div>
-        <div style="clear:both;"></div>
-        <div id="footer">  &copy; 2020 Online Clothing Store</div>
-    </div>
-</body>
+	</body>
 
 </html>

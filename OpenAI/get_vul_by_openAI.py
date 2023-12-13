@@ -6,20 +6,13 @@ import base64
 import string
 import re
 
-api_key_no1 = "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"
+api_key_no1 = "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"
 openai.api_key = api_key_no1
 
 # get all vulnerabilities from file
 f = open("./OpenAI/template_vuln.txt", "r")
 template_vuln = ast.literal_eval(f.read())
 f.close()
-
-# f = open("infor_req_paren.txt", "r")
-# get_requests_response = ast.literal_eval(f.read()) #list
-# f.close()
-
-# list_req = list(get_requests_response)
-# print(get_requests_response[list_req[0]][0]['request'])
 
 template_vuln_allname = ""
 for item in template_vuln:
@@ -49,7 +42,6 @@ def question(request, response):
     return question_list_vuln + question_request
 
 def encode_base64(strings):
-    # base64_bytes = strings.encode("utf-8") 
   
     sample_string_bytes = base64.b64decode(strings) 
     sample_string = sample_string_bytes.decode("utf-8")
@@ -58,12 +50,10 @@ def encode_base64(strings):
 def get_vul(request, response):
     # Question for openAI
     output_from_openAI = connect_chatGPT(question(encode_base64(request), encode_base64(response)))
-    # print(output_from_openAI)
         
     recommend_testcase = []
     for vul in template_vuln:
         if vul['template_name'] in output_from_openAI:
-            # vuln = {'id': vul['id'], 'template_name': vul['template_name']}
             vuln = f"{vul['template_name']} " + "</br>"
             recommend_testcase.append(vuln)
     text_vul = ' '.join([str(vul) for vul in recommend_testcase])

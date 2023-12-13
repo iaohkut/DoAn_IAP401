@@ -1,3 +1,3 @@
 Found Vulnerable SSTI
-URL:http://54.254.196.11/Admin/index.php
+URL:http://54.254.196.11/Admin/Detail.php?CustomerId=1
 PAYLOAD:{{27*10}}

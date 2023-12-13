@@ -287,7 +287,7 @@ def template_SQLi(id, url, user, result_scan,method):
     solution = "The only sure way to prevent SQL Injection attacks is input validation and parametrized queries including prepared statements. The application code should never use the input directly. The developer must sanitize all input, not only web form inputs such as login forms. They must remove potential malicious code elements such as single quotes. It is also a good idea to turn off the visibility of database errors on your production sites. Database errors can be used with SQL Injection to gain information about your database"
     pentester = user
     reference = '''
-https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Cheat_Sheet.html
+        https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Cheat_Sheet.html
             '''
     detail = result_scan
     duplicate = conn.execute('SELECT * FROM bugs WHERE requestid = ? AND bugurl = ? AND name = ?',(id,bugurl,name)).fetchone()
@@ -319,39 +319,7 @@ def template_SSTI(id, url, user, result_scan,method):
     solution = "Do not use user input where they are interpreted as template.Associate the parameter value with a unique identifier on the server side in advance. Acquire and use the value according to the identifier sent from the client."
     pentester = user
     reference = '''
-https://owasp.org/www-project-web-security-testing-guide/v41/4-Web_Application_Security_Testing/07-Input_Validation_Testing/18-Testing_for_Server_Side_Template_Injection
-            '''
-    detail = result_scan
-    duplicate = conn.execute('SELECT * FROM bugs WHERE requestid = ? AND bugurl = ? AND name = ?',(id,bugurl,name)).fetchone()
-    if duplicate is None:
-        conn.execute('INSERT INTO bugs (requestid,name,bugurl,cweid,description,solution,risk,reference,pentester,bugsmethod,detail,impact) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)',
-                                    (id,
-                                    name.encode('latin-1', 'replace').decode('latin-1'),
-                                    bugurl.encode('latin-1', 'replace').decode('latin-1'),
-                                    cweid.encode('latin-1', 'replace').decode('latin-1'),
-                                    description.encode('latin-1', 'replace').decode('latin-1'),
-                                    solution.encode('latin-1', 'replace').decode('latin-1'),
-                                    risk.encode('latin-1', 'replace').decode('latin-1'),
-                                    reference.encode('latin-1', 'replace').decode('latin-1'),
-                                    pentester.encode('latin-1', 'replace').decode('latin-1'),method.encode('latin-1', 'replace').decode('latin-1'),
-                                    detail.encode('latin-1', 'replace').decode('latin-1'),
-                                    impact.encode('latin-1', 'replace').decode('latin-1')))
-        conn.commit()
-  
-      
-def template_Open_Redirect(id, url, user, result_scan,method):
-    request_have_bug = 1
-    conn = get_db_connection()
-    name = 'Open Redirect'
-    bugurl = url
-    cweid = 'CWE-601'
-    risk = 'Low'
-    description = "This function may be used as a redirector to an external site because the parameter value is output to the redirection destination URL in the response."
-    impact = "The attacker may force users to transition to a malicious site for phishing and other scams using the vulnerability."
-    solution = "Prevent client from freely specifying URL.Associate a redirect destination URL with a unique identifier in advance on the server side. Acquire and use the URL according to the identifier sent from the client; If it is necessary to use URL from client, validate the absolute URL by the forward match search including the slash "/" after hostname, as shown below; Prevent tampering of the parameter for redirect destination. For example, use Message Authentication Code (MAC)."
-    pentester = user
-    reference = '''
-https://cheatsheetseries.owasp.org/cheatsheets/Unvalidated_Redirects_and_Forwards_Cheat_Sheet.html
+        https://owasp.org/www-project-web-security-testing-guide/v41/4-Web_Application_Security_Testing/07-Input_Validation_Testing/18-Testing_for_Server_Side_Template_Injection
             '''
     detail = result_scan
     duplicate = conn.execute('SELECT * FROM bugs WHERE requestid = ? AND bugurl = ? AND name = ?',(id,bugurl,name)).fetchone()
@@ -383,7 +351,7 @@ def template_OS_Command(id, url, user, result_scan,method):
     solution = "Do not use functions that invokes shell.Also, define allowed character types for the parameter and validate the value on the server side. Return an error if an unintended value is given."
     pentester = user
     reference = '''
-https://cheatsheetseries.owasp.org/cheatsheets/OS_Command_Injection_Defense_Cheat_Sheet.html
+        https://cheatsheetseries.owasp.org/cheatsheets/OS_Command_Injection_Defense_Cheat_Sheet.html
             '''
     detail = result_scan
     duplicate = conn.execute('SELECT * FROM bugs WHERE requestid = ? AND bugurl = ? AND name = ?',(id,bugurl,name)).fetchone()
@@ -411,7 +379,7 @@ def template_path_travel(id, url, user,result_scan, method):
     cweid = 'CWE-98'
     risk = 'High'
     reference = '''
-https://owasp.org/www-project-web-security-testing-guide/v42/4-Web_Application_Security_Testing/07-Input_Validation_Testing/11.1-Testing_for_Local_File_Inclusion
+        https://owasp.org/www-project-web-security-testing-guide/v42/4-Web_Application_Security_Testing/07-Input_Validation_Testing/11.1-Testing_for_Local_File_Inclusion
             '''
     description = "It is possible to obtain a file content that is not normally accessible because the parameter input is used in the file access process without proper validation."
     solution = "The most effective solution to eliminate file inclusion vulnerabilities is to avoid passing user-submitted input to any filesystem/framework API. If this is not possible the application can maintain an allow list of files, that may be included by the page, and then use an identifier (for example the index number) to access to the selected file. Any request containing an invalid identifier has to be rejected, in this way there is no attack surface for malicious users to manipulate the path."
@@ -518,7 +486,7 @@ def template_find_script(id, url, user, result_scan,method):
     solution = "Load all contents of HTTPS page via HTTPS."
     pentester = user
     reference = '''
-https://cwe.mitre.org/data/definitions/749.html
+        https://comingbusiness.com/chatgpt-sees-traffic-fall-10-in-june-after-initial-rush-from-users/
             '''
     detail = result_scan
     duplicate = conn.execute('SELECT * FROM bugs WHERE requestid = ? AND bugurl = ? AND name = ?',(id,bugurl,name)).fetchone()
@@ -550,7 +518,7 @@ def template_find_comment(id, url, user, result_scan,method):
     solution = "Delete unnecessary information contained in the contents."
     pentester = user
     reference = '''
-https://cwe.mitre.org/data/definitions/615.html
+        https://comingbusiness.com/chatgpt-sees-traffic-fall-10-in-june-after-initial-rush-from-users/
             '''
     detail = result_scan
     duplicate = conn.execute('SELECT * FROM bugs WHERE requestid = ? AND bugurl = ? AND name = ?',(id,bugurl,name)).fetchone()
@@ -581,7 +549,7 @@ def template_sameSite_attribute(id, url, user, result_scan,method):
     solution = 'When issuing a cookie to be treated as a session ID, add a SameSite attribute set to either "Lax" or "Strict".However, in the case of a system consisting of multiple domains, it is possible that this countermeasure may cause the system to fail to operate properly.'
     pentester = user
     reference = '''
-https://cwe.mitre.org/data/definitions/1275.html
+        https://cwe.mitre.org/data/definitions/1275.html
             '''
     detail = result_scan
     duplicate = conn.execute('SELECT * FROM bugs WHERE requestid = ? AND bugurl = ? AND name = ?',(id,bugurl,name)).fetchone()
@@ -612,7 +580,7 @@ def template_http_method(id, url, user, result_scan,method):
     solution = "Change the settings of the web server and disable unnecessary methods."
     pentester = user
     reference = '''
-https://cwe.mitre.org/data/definitions/650.html
+        https://cwe.mitre.org/data/definitions/650.html
             '''
     detail = result_scan
     duplicate = conn.execute('SELECT * FROM bugs WHERE requestid = ? AND bugurl = ? AND name = ?',(id,bugurl,name)).fetchone()
@@ -644,7 +612,7 @@ def template_component(id, url, user, result_scan,method):
     impact = "An attacker could exploit this vulnerability to compromise the security of the application."
     solution = "Upgrade the third-party component to the latest, patched version or apply recommended security measures."
     pentester = user
-    reference = '''CVE Details: https://www.cvedetails.com/'''
+    reference = '''https://owasp.org/www-community/Component_Analysis'''
     detail = result_scan
     duplicate = conn.execute('SELECT * FROM bugs WHERE requestid = ? AND bugurl = ? AND name = ?',(id,bugurl,name)).fetchone()
     if duplicate is None:
@@ -675,7 +643,7 @@ def template_check_http_https(id, url, user, result_scan,method):
     solution = "The functions that send and receive critical data should be provided via HTTPS;It is recommended that the following header be set in the response to force the browser to use HTTPS connection (HTTP Strict Transport Security)."
     pentester = user
     reference = '''
-https://cwe.mitre.org/data/definitions/311.html
+        https://cwe.mitre.org/data/definitions/311.html
             '''
     detail = result_scan
     duplicate = conn.execute('SELECT * FROM bugs WHERE requestid = ? AND bugurl = ? AND name = ?',(id,bugurl,name)).fetchone()
@@ -707,7 +675,7 @@ def template_hidden_path(id, url, user, result_scan,method):
     impact = "An attacker may discover hidden paths, leading to potential information disclosure or unauthorized access."
     solution = "Ensure that all sensitive paths are properly secured and not discoverable through the application interface."
     pentester = user
-    reference = '''OWASP: https://www.owasp.org/'''
+    reference = '''https://crashtest-security.com/url-fuzzer/'''
     detail = result_scan
     duplicate = conn.execute('SELECT * FROM bugs WHERE requestid = ? AND bugurl = ? AND name = ?',(id,bugurl,name)).fetchone()
     if duplicate is None:
@@ -738,7 +706,7 @@ def template_JWT(id, url, user, result_scan,method):
     solution = "A random string of sufficient length that cannot be easily guessed is used as the secret key for signing.A public key cryptographic algorithm is used for signing."
     pentester = user
     reference = '''
-https://cwe.mitre.org/data/definitions/650.html
+        https://portswigger.net/web-security/jwt
             '''
     detail = result_scan
     duplicate = conn.execute('SELECT * FROM bugs WHERE requestid = ? AND bugurl = ? AND name = ?',(id,bugurl,name)).fetchone()
@@ -769,7 +737,7 @@ def template_CRLF(id, url, user, result_scan,method):
     solution = "Ensure that all user inputs are properly validated before they are used. Reject or sanitize any input that contains CRLF characters"
     pentester = user
     reference = '''
-https://cwe.mitre.org/data/definitions/93.html
+        https://owasp.org/www-community/vulnerabilities/CRLF_Injection
             '''
     detail = result_scan
     duplicate = conn.execute('SELECT * FROM bugs WHERE requestid = ? AND bugurl = ? AND name = ?',(id,bugurl,name)).fetchone()

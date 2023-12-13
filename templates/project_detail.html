@@ -176,7 +176,7 @@
               </div>
             </td>
           </tr>
-          <!-- Modal -->
+          <!-- Modal display testcase for requests-->
           <div class="modal fade" id="statusModal-{{request.requestid}}" tabindex="-1" role="dialog" aria-labelledby="statusModal-{{request.requestid}}Title" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
               <div class="modal-content">
@@ -201,7 +201,7 @@
     </div>
 
 <!-- Modal Do active scan -->
-<!-- <div class="modal fade" id="activeScanModal" tabindex="-1" role="dialog" aria-labelledby="activeScanModal" aria-hidden="true">
+<div class="modal fade" id="activeScanModal" tabindex="-1" role="dialog" aria-labelledby="activeScanModal" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -226,7 +226,7 @@
       </div>
     </div>
   </div>
-</div> -->
+</div>
 
 <!-- Modal Import CSV -->
 <div class="modal fade" id="importCSVModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -240,9 +240,8 @@
       </div>
       <form method="POST" enctype="multipart/form-data" action="/upload"> 
       <div class="modal-body">
-          <input type="hidden" name="projectid" value="{{project.projectid}}"> <!-- Thêm input hidden chứa giá trị projectid -->
+          <input type="hidden" name="projectid" value="{{project.projectid}}">
           <input type="file" name="file" accept=".csv">
-          <!-- <input type="submit" value="Upload">  -->
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
