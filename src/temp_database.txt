@@ -1,17 +1,5 @@
 Comment 1:
- end #menu 
+<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Architects+Daughter">
 ==============================Comment 2:
- end #header 
-==============================Comment 3:
- end #content 
-==============================Comment 4:
- end #sidebar 
-==============================Comment 5:
- process.php load pages from path of the website. 
-==============================Comment 6:
- FIXME: File / directory permissions 
-==============================Comment 7:
- end #page 
-==============================Comment 8:
- end #footer 
+<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 ==============================

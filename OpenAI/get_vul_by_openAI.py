@@ -8,7 +8,7 @@ import re
 from bs4 import BeautifulSoup
 
 
-api_key_no1 = "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"
+api_key_no1 = "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"
 openai.api_key = api_key_no1
 
 # get all vulnerabilities from file
@@ -20,56 +20,13 @@ template_vuln_allname = ""
 for item in template_vuln:
     template_vuln_allname += item['template_name'] + "\n"
 
-def write_file_respon(respon):
-  
-    sample_string_bytes = base64.b64decode(respon) 
-    sample_string = sample_string_bytes.decode("utf-8")
-
-    file1 = open('./OpenAI/response.txt', 'w')
-    file1.writelines(sample_string)
-    
-    file1.close()
-
-def custom_response():
-    file_path = './OpenAI/response.txt'
-    with open(file_path, 'r') as file:
-        response = file.read()
-
-    header_lines, html_content = response.split("\n\n", 1)
-    headers = dict(line.split(": ", 1) for line in header_lines.split("\n")[1:])
-
-    new_html_content = ''
-
-    for key, value in headers.items():
-        header = f"{key}: {value}"
-        new_html_content = new_html_content + header + '\n'
-
-    soup = BeautifulSoup(html_content, 'html.parser')
-
-    head_content = soup.head
-
-    new_html_content = new_html_content + '\n'
-
-    new_html_content1 = f"<!DOCTYPE html>\n<html>\n{head_content}\n<body>\n"
-    new_html_content2 = f"\n</body>\n</html>"
-
-    new_html_content = new_html_content + new_html_content1
-    input_tags = soup.find_all("input")
-
-    for input_tag in input_tags:
-        new_html_content = new_html_content + str(input_tag) + '\n'
-
-    new_html_content = new_html_content + new_html_content2
-
-    return new_html_content
-
 def connect_chatGPT(question):
     messages = [
         {"role": "user", "content": question},
     ]
     
     completion = openai.chat.completions.create(
-        model="gpt-3.5-turbo",
+        model="gpt-4",
         messages=messages
     )
     output_from_chatGPT = completion.choices[0].message.content
@@ -93,12 +50,9 @@ def encode_base64(strings):
     return sample_string
 
 def get_vul(request, response):
-    write_file_respon(response)
-
-    response = custom_response()
 
     # Question for openAI
-    output_from_openAI = connect_chatGPT(question(encode_base64(request), response))
+    output_from_openAI = connect_chatGPT(question(encode_base64(request), encode_base64(response)))
         
     recommend_testcase = []
     for vul in template_vuln:
