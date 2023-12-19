@@ -9,8 +9,8 @@
   </br></br></br>
   <center>
   <form action="{{ url_for('search_project') }}" method ="GET">
-    <input style="text-align: center;width:50%;" name="projectname" type="projectname" placeholder="Search Project" />
-    <button>Search</button>
+    <input style="width:50%;" name="projectname" type="projectname" placeholder="Search Project" />
+    <button style="border-radius: 5px;">Search</button>
   </form>
 </center></br>
 <div >
@@ -72,7 +72,7 @@
             <td style="text-align: center"class="align-middle" >{{ project.vunls }}</td>
             <td style="text-align: center"class="align-middle" >{{ project.create_by }}</td>
             <td style="text-align: center"class="align-middle" >{{ project.status }}</td>
-            <td style="text-align: center" class="align-middle" > 
+            <td style="text-align: center " class="align-middle" > 
               <div style="float:center;" class="dropdown">
                 <button class="btn btn-success" class="dropbtn">Action</button>
                 <div class="dropdown-content">

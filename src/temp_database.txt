@@ -1,5 +1,15 @@
 Comment 1:
-<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Architects+Daughter">
-==============================Comment 2:
-<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+
+    .style9 {
+      font-size: 95%;
+      font-weight: bold;
+      color: #003300;
+      font-family: Verdana, Arial, Helvetica, sans-serif;
+    }
+
+    .style10 {
+      font-size: 14px;
+      font-weight: bold;
+    }
+    
 ==============================

@@ -11,14 +11,13 @@
                value="{{ request.form['username'] }}"></input>
     </div>
 
-    <div>
-    <label for="role">Role: </label>
-    <select name="role" id="role">
+    <div class="form-group" style="width: 100%;display: flex;margin-top: 20px;padding: 0;margin-bottom: 20px;">
+    <label for="role" style="width: 15%;align-items: center;display: flex;margin: auto;height: 46px;">Role: </label>
+    <select name="role" style="width: 85%;background-color: white;border-radius: 5px;" id="role">
         <option value="Project Manager">Project Manager</option>
         <option value="Pentester">Pentester</option>
       </select>
     </div>
-</br>
     <div class="form-group">
         <input type="password" name="password" id="password"
                placeholder="Password" class="form-control"
@@ -30,9 +29,9 @@
                placeholder="confirm Password" class="form-control"
                value="{{ request.form['confirmpassword'] }}"></input>
     </div>
-    <div class="form-group">
-        <button type="submit" class="btn btn-primary">Submit</button>
-        <button type="Cancel" class="btn btn-primary">Cancel</button>
+    <div class="form-group" style="width: 100%;display: flex;justify-content: space-between;">
+        <button type="submit" class="btn btn-primary" style="width: 45%">Submit</button>
+        <button type="Cancel" class="btn btn-primary" style="width: 45%">Cancel</button>
     </div>
     <p style="color:red;">{{msg}}</p>
 </form>

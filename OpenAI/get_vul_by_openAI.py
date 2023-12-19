@@ -8,7 +8,7 @@ import re
 from bs4 import BeautifulSoup
 
 
-api_key_no1 = "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"
+api_key_no1 = "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"
 openai.api_key = api_key_no1
 
 # get all vulnerabilities from file

@@ -31,7 +31,7 @@
                 <a class="nav-link" href="{{ url_for('showproject')}}">Project Manager</a>
               </li>
               <li class="nav-item active">
-                <a class="nav-link" href="{{ url_for('leaderboard')}}">Leader Broads</a>
+                <a class="nav-link" href="{{ url_for('leaderboard')}}">LeaderBoards</a>
               </li>
               {% else %}
               {% endif %}
@@ -39,11 +39,11 @@
         </div>
         {% endblock %}  
         {% if session.userid %}
-        <div class="dropdown">
+        <div class="dropdown " >
           <button class="dropbtn">Profile</button>
-          <div class="dropdown-content">
+          <div class="dropdown-content" style="width: 200px !important;">
                 <a href="{{ url_for('profile')}}" class="nav-link">My profile</a>
-                <a href="{{ url_for('changepwd')}}" class="nav-link">Change Password</a>
+                <a href="{{ url_for('changepwd')}}" class="nav-link " style="display: flex;width: 100%;">Change Password</a>
                 <a href="{{ url_for('logout')}}" class="nav-link">Logout</a>
           </div>
         </div>

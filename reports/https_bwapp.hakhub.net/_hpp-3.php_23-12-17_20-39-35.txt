@@ -1,0 +1,4 @@
+# Dirsearch started Sun Dec 17 20:42:31 2023 as: tool/dirsearch/dirsearch.py -u https://bwapp.hakhub.net/hpp-3.php?movie=9
+
+403   288B   https://bwapp.hakhub.net/hpp-3.phps
+403   301B   https://bwapp.hakhub.net/hpp-3.phps/sfsites/aura

@@ -3,7 +3,7 @@
     <center><h1>{% block title %} Detail of {{project.projectname}}  {% endblock %}</h1></center>
     <a href="{{ url_for('download_report',id= project.projectid)}}" class="btn btn-success" style="float: right;" role="button" aria-pressed="true">Download Report</a>
     <!-- <a href="{{ url_for('upload_file', projectid=project.projectid)}}" class="btn btn-success" style="float: right;" role="button" aria-pressed="true">Import CSV</a> -->
-    <a data-toggle="modal" data-target="#importCSVModal" class="btn btn-success" style="float: right; color: white;" role="button" aria-pressed="true">Import CSV</a>
+    <a data-toggle="modal" data-target="#importCSVModal" class="btn btn-success" style="float: right; color: white;margin-right: 10px;" role="button" aria-pressed="true">Import CSV</a>
     
 <br>
     <div style="display: flex;justify-content: center;">
@@ -32,7 +32,7 @@
                       {% elif bug.risk == 'Low'%}
                       <td style="text-align: center" style="color: red"><a style="color:green">{{bug.risk}}</a></td>
                       {% elif bug.risk == 'Informational'%}
-                      <td style="text-align: center" style="color: red"><a style="color:lightblue">{{bug.risk}}</a></td>
+                      <td style="text-align: center" style="color: red"><a style="color:#2dcbd2">{{bug.risk}}</a></td>
                       {% endif %}
                   </tr>
                   {% endfor %}
@@ -57,18 +57,18 @@
 
   function drawCharts() {
       var data = new google.visualization.DataTable()
-      data.addColumn('string', 'Request')
+      data.addColumn('string', 'Request');
       data.addColumn('number', 'Request');
       data.addRows([
         ['Done', {{donerequest}}],
-        ['Remain', {{remain}}]  
+        ['Remain', {{remain}}]
       ]);
       var options_3 = {
         'title': 'Request Status',
         'width': '530',
         'height': '500',
-        'pieHole': 0.5,
-    }
+        'pieHole': 0.5
+      }
     var donut_chart = new google.visualization.PieChart(document.getElementById('donut_chart'));
     donut_chart.draw(data, options_3);         
   }
@@ -84,7 +84,7 @@
             <th style="text-align: center" style="width: 200px;">Project Request URL</th>
             <th style="text-align: center" cope="col">Params</th>
             <th style="text-align: center" scope="col">Status</th>
-            <th style="text-align: center" scope="col">Bug</th>
+            <th style="text-align: center" scope="col">ChatGPT</th>
             <th style="text-align: center" scope="col">Do active scan</th>
             <th style="text-align: center;width: 8%;" scope="col">Test Date</th>
             <th style="text-align: center" scope="col">Test by</th>
@@ -105,13 +105,13 @@
 
                 {% if request.isscan != 1 %}
                 <td style="text-align: center" > 
-                  <span style="float:center;">
-                  <a onclick="loadScreen({{request.requestid}})"class="btn btn-success">Active scan</a>
+                  <span style="float:center;display: flex;justify-content: center;">
+                  <a onclick="loadScreen({{request.requestid}})"class="btn btn-success" style="width: 116px;height: 61px;display: flex;align-items: center;justify-content: center;" >Active scan</a>
                   </span>
                 </td>
                 {% else %}
                 <td style="text-align: center;"> 
-                  <span style="float:center; cursor: pointer;" data-toggle="modal" data-target="#activeScanModal">
+                  <span style="float:center; cursor: pointer;" data-toggle="modal" data-target="#activeScanModal-{{request.requestid}}">
                   Had been scanned
                   </span>
                 </td>
@@ -119,17 +119,17 @@
 
             {% elif request.ischatGPT != 1%}
               <td style="text-align: center; cursor: pointer" data-toggle="modal" data-target="#statusModal-{{request.requestid}}">
-                <a onclick="call_chatGPT({{request.requestid}})"class="btn btn-success"style="color:blue">Call ChatGPT</a>
+                <a onclick="call_chatGPT({{request.requestid}})"class="btn btn-success" >Call ChatGPT</a>
               </td>
                 {% if request.isscan != 1 %}
                 <td style="text-align: center" > 
-                  <span style="float:center;">
-                  <a disable class="btn btn-success">Active scan</a>
+                  <span style="float:center;display: flex;justify-content: center;">
+                  <a disable class="btn btn-success" style="width: 116px;height: 61px;display: flex;align-items: center;justify-content: center;">Active scan</a>
                   </span>
                 </td>
                 {% else %}
                 <td style="text-align: center;"> 
-                  <span style="float:center; cursor: pointer;" data-toggle="modal" data-target="#activeScanModal">
+                  <span style="float:center; cursor: pointer;" data-toggle="modal" data-target="#activeScanModal-{{request.requestid}}">
                   Had been scanned
                   </span>
                 </td>
@@ -195,38 +195,39 @@
               </div>
             </div>
           </div>
-          {% endfor %}
+          <!-- Modal Do active scan -->
+          <div class="modal fade" id="activeScanModal-{{request.requestid}}" tabindex="-1" role="dialog" aria-labelledby="activeScanModal-{{request.requestid}}" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLongTitle">Scan Detail</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body" style="overflow-wrap: break-word;">
+                   {% for bug in bugs %}
+                      {% if request.requestid == bug.requestid %}
+                        <p>
+                          {{bug.detail}}
+                        </p>
+                          
+                      {% endif %}
+                    {% endfor %}
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
         </tbody>
       </table> 
     </div>
 
-<!-- Modal Do active scan -->
-<div class="modal fade" id="activeScanModal" tabindex="-1" role="dialog" aria-labelledby="activeScanModal" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Scan Detail</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <tbody>
-          {% for bug in bugs %}
-            {% if bug.detail is not none %}
-              <tr>
-                <td style="width: 70%;">{{ bug.detail }}</td>
-              </tr>
-            {% endif %}
-          {% endfor %}
-        </tbody>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
+
+
 
 <!-- Modal Import CSV -->
 <div class="modal fade" id="importCSVModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">

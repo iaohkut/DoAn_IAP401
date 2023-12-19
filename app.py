@@ -58,15 +58,15 @@ def login():
         username = details['username'] 
         password = details['password']
 
-        password = hash_password(password)
-        
+        password_hash = hash_password(password)
+
         #creating a DB connection
         cur = get_db_connection()
         isactive = cur.execute('SELECT * FROM users WHERE username = ? AND isactive = ?',(username,0,)).fetchone()
         if isactive is not None:
             msg = 'Account is inactive'
             return render_template('login.html',msg=msg)
-        account = cur.execute('SELECT * FROM users WHERE username = ? AND password = ?',(username,password,)).fetchone()
+        account = cur.execute('SELECT * FROM users WHERE username = ? AND password = ?',(username,password_hash,)).fetchone()
         cur.commit()
         cur.close()
         if account is not None:
@@ -589,7 +589,7 @@ def project_detail(id):
         updateprj = conn.execute('UPDATE projects SET status = ?,enddate= ? WHERE projectid = ?',("Done",datetime.today().strftime('%Y-%m-%d'),id,))
     conn.commit()
     
-    bugs = conn.execute('SELECT bugs.name,count(bugid),risk,detail FROM requests,bugs WHERE requests.requestid = bugs.requestid AND projectid = ? GROUP BY bugs.name',(id,)).fetchall()
+    bugs = conn.execute('SELECT bugs.name,count(bugid),risk,detail, bugs.requestid FROM requests,bugs WHERE requests.requestid = bugs.requestid AND projectid = ? GROUP BY bugs.name',(id,)).fetchall()
     conn.commit()
     conn.close()
     return render_template('project_detail.html',bugs=bugs,currentuser=currentuser,havebugs=havebugs,users=users,project=project,totalrequest=totalrequest,donerequest=donerequest,remain=remain,requests=requests,msg=msg)

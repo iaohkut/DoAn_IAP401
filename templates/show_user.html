@@ -6,8 +6,8 @@
   </br></br></br>
   <center>
   <form action="{{ url_for('search_user') }}" method ="GET">
-    <input style="text-align: center;width:50%;" name="username" type="username" placeholder="Search User via Username" />
-    <button>Search</button>
+    <input style="width:50%;" name="username" type="username" placeholder="Search User via Username" />
+    <button style="border-radius: 5px;">Search</button>
   </form>
 </center></br>
     <table class="table">
@@ -40,9 +40,9 @@
             {%else%}
             <td style="text-align: center"class="align-middle">Disable</td>
             {% endif %}
-            <td style="text-align: center"class="align-middle"> 
+            <td style="text-align: center ;display: flex;justify-content: center;"class="align-middle"> 
               <span style="float:left;">
-              <a href="{{ url_for('edituser',id= user.userid) }} "class="btn btn-primary">Edit</a>
+              <a href="{{ url_for('edituser',id= user.userid) }} "class="btn btn-primary" style="margin-right: 10px;">Edit</a>
               </span>
               {% if user.isactive == 1 %}
               <span style="float:left;"> 
